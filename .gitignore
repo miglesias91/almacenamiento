@@ -1,0 +1,8 @@
+*.VC.db
+*.VC.VC.opendb
+*.vcxproj.user
+/Debug
+*/Debug
+.vs/
+packages/
+x64/
