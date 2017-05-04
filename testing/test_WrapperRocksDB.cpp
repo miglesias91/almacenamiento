@@ -45,6 +45,29 @@ TEST(WrapperRocksDB, almacenarRecuperarEliminarCorrectamente)
 	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
 }
 
+TEST(WrapperRocksDB, AlmacenarClaveExistenteConDistintoValor)
+{
+	almacenamiento::IAlmacenableClaveValor* clave_valor_a_almacenar = new ObjetoClaveValor("id2", "crisis", "");
+
+	almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
+	
+	almacenamiento::WrapperRocksDB::RocksDB::almacenar(clave_valor_a_almacenar);
+
+	clave_valor_a_almacenar->setValor("holanda");
+
+	almacenamiento::WrapperRocksDB::EstadoDB estado = almacenamiento::WrapperRocksDB::RocksDB::almacenar(clave_valor_a_almacenar);
+
+	almacenamiento::IAlmacenableClaveValor* clave_valor_a_recuperar = new ObjetoClaveValor();
+
+	almacenamiento::WrapperRocksDB::RocksDB::recuperar("id2", clave_valor_a_recuperar);
+
+	ASSERT_NE(true, estado.ok());
+	ASSERT_STREQ("knascjonaw", clave_valor_a_recuperar->getClave().c_str());
+	ASSERT_STREQ("", clave_valor_a_recuperar->getValor().c_str());
+
+	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
+}
+
 TEST(WrapperRocksDB, RecuperarClaveInexistente)
 {
 	almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
