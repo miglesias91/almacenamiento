@@ -31,22 +31,24 @@ bool AdministradorAlmacenamientoLocal::almacenar(IAlmacenableClaveValor* valor_a
 
 bool AdministradorAlmacenamientoLocal::recuperar(std::string clave_a_recuperar, IAlmacenableClaveValor* valor_recuperado)
 {
+	return true;
 }
 
 bool AdministradorAlmacenamientoLocal::modificar(std::string clave_a_modificar, IAlmacenableClaveValor* valor_modificado)
 {
-
+	return true;
 }
 
 bool AdministradorAlmacenamientoLocal::eliminar(std::string clave_a_eliminar)
 {
-
+	return true;
 }
 
 // CONSULTA
 
 bool AdministradorAlmacenamientoLocal::existe(std::string clave_a_chequear)
 {
+	return true;
 }
 
 // METODOS INTERNOS

@@ -5,7 +5,6 @@
 
 // almacenamiento
 #include <almacenamiento/include/IAlmacenableClaveValor.h>
-#include <almacenamiento/include/AdministradorAlmacenamientoLocal.h>
 
 namespace almacenamiento
 {
@@ -14,60 +13,19 @@ class IAdministradorAlmacenamiento
 {
 	public:
 
-		static void iniciar(std::string path_configuracion)
-		{
-			//almacenamiento::ConfiguracionAlmacenamiento configuracion(path_configuracion);
+		static void iniciar(std::string path_configuracion);
 
-			//if (configuracion.almacenamientoLocal())
-			//{
-			//	crearAdministradorAlmacenamientoLocal();
-			//}
-			//else
-			//{
-			//	crearAdministradorAlmacenamientoDistribuido();
-			//}
-			if (administradorIniciado())
-			{
-				throw std::exception("Administrador ya fue iniciado.");
-			}
-			crearAdministradorAlmacenamientoLocal();
-		}
+		static void liberar();
 
-		static void liberar()
-		{
-			if (false == administradorIniciado())
-			{
-				delete administrador;
-			}
-		}
+		static void crearAdministradorAlmacenamientoLocal();
 
-		static void crearAdministradorAlmacenamientoLocal()
-		{
-			std::string path_db = "C:/temp/test_rocksdb";
-			administrador = new AdministradorAlmacenamientoLocal(path_db);
-		};
+		static void crearAdministradorAlmacenamientoDistribuido();
 
-		static void crearAdministradorAlmacenamientoDistribuido() {};
-
-
-		static bool administradorIniciado()
-		{
-			return administrador != NULL;
-		}
+		static bool administradorIniciado();
 
 		// GETTERS
 
-		static IAdministradorAlmacenamiento* getInstancia()
-		{
-			if (administradorIniciado())
-			{
-				return administrador;
-			}
-			else
-			{
-				throw std::exception("Administrador de almacenamiento no inicializado.");
-			}
-		};
+		static IAdministradorAlmacenamiento* getInstancia();
 
 		// SETTERS
 

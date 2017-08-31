@@ -21,5 +21,8 @@
     <ClCompile Include="test_WrapperRocksDB.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="test_almacenamiento.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

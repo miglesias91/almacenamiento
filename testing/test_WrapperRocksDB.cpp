@@ -39,10 +39,10 @@ TEST(WrapperRocksDB, almacenarRecuperarEliminarCorrectamente)
 
 	almacenamiento::WrapperRocksDB::RocksDB::recuperar("id1", clave_valor_a_recuperar);
 
+	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
+
 	ASSERT_STREQ("id1", clave_valor_a_recuperar->getClave().c_str());
 	ASSERT_STREQ("", clave_valor_a_recuperar->getValor().c_str());	
-
-	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
 }
 
 TEST(WrapperRocksDB, AlmacenarClaveExistenteConDistintoValor)
@@ -61,11 +61,11 @@ TEST(WrapperRocksDB, AlmacenarClaveExistenteConDistintoValor)
 
 	almacenamiento::WrapperRocksDB::RocksDB::recuperar("id2", clave_valor_a_recuperar);
 
-	ASSERT_NE(true, estado.ok());
-	ASSERT_STREQ("knascjonaw", clave_valor_a_recuperar->getClave().c_str());
-	ASSERT_STREQ("", clave_valor_a_recuperar->getValor().c_str());
-
 	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
+
+	ASSERT_EQ(true, estado.ok());
+	ASSERT_STREQ("id2", clave_valor_a_recuperar->getClave().c_str());
+	ASSERT_STREQ("holanda", clave_valor_a_recuperar->getValor().c_str());
 }
 
 TEST(WrapperRocksDB, RecuperarClaveInexistente)
@@ -76,11 +76,11 @@ TEST(WrapperRocksDB, RecuperarClaveInexistente)
 
 	almacenamiento::WrapperRocksDB::EstadoDB estado = almacenamiento::WrapperRocksDB::RocksDB::recuperar("knascjonaw", clave_valor_a_recuperar);
 
+	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
+
 	ASSERT_NE(true, estado.ok());
 	ASSERT_STREQ("knascjonaw", clave_valor_a_recuperar->getClave().c_str());
 	ASSERT_STREQ("", clave_valor_a_recuperar->getValor().c_str());
-
-	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
 }
 
 TEST(WrapperRocksDB, EliminarClaveInexistente)
@@ -91,9 +91,9 @@ TEST(WrapperRocksDB, EliminarClaveInexistente)
 
 	almacenamiento::WrapperRocksDB::EstadoDB estado = almacenamiento::WrapperRocksDB::RocksDB::eliminar("oicvonmcqw");
 
-	ASSERT_EQ(true, estado.ok());
-
 	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
+
+	ASSERT_EQ(true, estado.ok());
 }
 
 /*
