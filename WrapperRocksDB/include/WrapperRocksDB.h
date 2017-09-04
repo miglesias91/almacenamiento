@@ -36,13 +36,15 @@ class RocksDB
 
 		// METODOS
 
-		static EstadoDB almacenar(almacenamiento::IAlmacenableClaveValor* valor_a_almacenar);
+		static EstadoDB almacenar(std::string clave, std::string valor);
 
 		static EstadoDB almacenar(almacenamiento::IAlmacenableClaveValor* valor_a_almacenar, std::string familia);
 
-		static EstadoDB recuperar(std::string clave, almacenamiento::IAlmacenableClaveValor* valor_a_recuperar);
+		static EstadoDB recuperar(std::string clave, std::string & valor_a_recuperar);
 
 		static EstadoDB recuperar(std::string clave, almacenamiento::IAlmacenableClaveValor* valor_a_recuperar, std::string familia);
+
+		static EstadoDB recuperarGrupoPrefijo(std::string prefijo, std::vector<std::pair<std::string, std::string>> & valores_a_recuperar);
 
 		static EstadoDB eliminar(std::string clave);
 

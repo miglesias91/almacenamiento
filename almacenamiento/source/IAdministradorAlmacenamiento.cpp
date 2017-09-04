@@ -2,30 +2,40 @@
 
 using namespace almacenamiento;
 
+// stl
+#include <iostream>
+
+// almacenamiento
 #include <almacenamiento/include/AdministradorAlmacenamientoLocal.h>
+#include <almacenamiento/include/ConfiguracionAlmacenamiento.h>
+
+IAdministradorAlmacenamiento* IAdministradorAlmacenamiento::administrador = NULL;
 
 void IAdministradorAlmacenamiento::iniciar(std::string path_configuracion)
 {
-	//almacenamiento::ConfiguracionAlmacenamiento configuracion(path_configuracion);
-
-	//if (configuracion.almacenamientoLocal())
-	//{
-	//	crearAdministradorAlmacenamientoLocal();
-	//}
-	//else
-	//{
-	//	crearAdministradorAlmacenamientoDistribuido();
-	//}
 	if (administradorIniciado())
 	{
-		throw std::exception("Administrador ya fue iniciado.");
+		// TODO agregar log.
+		std::cout << "Administrador ya fue iniciado." << std::endl;
+		return;
+		// throw std::exception("Administrador ya fue iniciado.");
 	}
-	crearAdministradorAlmacenamientoLocal();
+
+	ConfiguracionAlmacenamiento::leerConfiguracion(path_configuracion);
+
+	if (ConfiguracionAlmacenamiento::almacenamientoLocal())
+	{
+		crearAdministradorAlmacenamientoLocal();
+	}
+	else
+	{
+		crearAdministradorAlmacenamientoDistribuido();
+	}
 }
 
 void IAdministradorAlmacenamiento::liberar()
 {
-	if (false == administradorIniciado())
+	if (true == administradorIniciado())
 	{
 		delete administrador;
 	}
@@ -33,8 +43,7 @@ void IAdministradorAlmacenamiento::liberar()
 
 void IAdministradorAlmacenamiento::crearAdministradorAlmacenamientoLocal()
 {
-	std::string path_db = "C:/temp/test_rocksdb";
-	administrador = new AdministradorAlmacenamientoLocal(path_db);
+	administrador = new AdministradorAlmacenamientoLocal(ConfiguracionAlmacenamiento::pathDB());
 };
 
 void IAdministradorAlmacenamiento::crearAdministradorAlmacenamientoDistribuido() {};

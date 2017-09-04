@@ -23,15 +23,19 @@ class AdministradorAlmacenamientoLocal : public IAdministradorAlmacenamiento
 
 		virtual bool almacenar(IAlmacenableClaveValor* valor_a_almacenar);
 
-		virtual bool recuperar(std::string clave_a_recuperar, IAlmacenableClaveValor* valor_recuperado);
+		virtual bool recuperar(IAlmacenableClaveValor* valor_recuperado);
 
-		virtual bool modificar(std::string clave_a_modificar, IAlmacenableClaveValor* valor_modificado);
+		virtual bool recuperar(std::vector<IAlmacenableClaveValor*> & valores_recuperados);
 
-		virtual bool eliminar(std::string clave_a_eliminar);
+		virtual bool recuperarGrupo(std::string prefijo_grupo, std::vector<IAlmacenableClaveValor*> & valores_recuperados);
+
+		virtual bool modificar(IAlmacenableClaveValor* nuevo_valor);
+
+		virtual bool eliminar(IAlmacenableClaveValor* clave_a_eliminar);
 
 		// CONSULTA
 
-		virtual bool existe(std::string clave_a_chequear);
+		virtual bool existe(IAlmacenableClaveValor* clave_a_chequear);
 
 	private:
 		// METODOS INTERNOS

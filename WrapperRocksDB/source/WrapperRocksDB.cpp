@@ -2,6 +2,9 @@
 
 using namespace almacenamiento::WrapperRocksDB;
 
+// rocksdb
+#include <rocksdb/slice_transform.h>
+
 rocksdb::DB* RocksDB::db;
 rocksdb::WriteOptions RocksDB::opciones_escritura;
 rocksdb::ReadOptions RocksDB::opciones_lectura;
@@ -11,6 +14,7 @@ EstadoDB RocksDB::abrir(std::string directorio)
 {
 	rocksdb::Options options;
 	options.create_if_missing = true;
+	options.prefix_extractor.reset(rocksdb::NewFixedPrefixTransform(3));
 
 	rocksdb::Status estado_rocksdb = rocksdb::DB::Open(options, directorio, &db);
 
@@ -75,21 +79,18 @@ void RocksDB::cerrar()
 
 // METODOS
 
-EstadoDB RocksDB::almacenar(almacenamiento::IAlmacenableClaveValor* valor_a_almacenar)
+EstadoDB RocksDB::almacenar(std::string clave, std::string valor)
 {
-	std::string string_clave = valor_a_almacenar->getClave();
-	std::string string_valor = valor_a_almacenar->getValor();
+	rocksdb::Slice slice_clave(clave);
+	rocksdb::Slice slice_valor(valor);
 
-	rocksdb::Slice clave(string_clave);
-	rocksdb::Slice valor(string_valor);
-
-	rocksdb::Status estado_rocksdb = db->Put(opciones_escritura, clave, valor);
+	rocksdb::Status estado_rocksdb = db->Put(opciones_escritura, slice_clave, slice_valor);
 
 	EstadoDB estado(estado_rocksdb);
 	return estado;
 }
 
-EstadoDB RocksDB::almacenar(almacenamiento::IAlmacenableClaveValor* valor_a_almacenar, std::string familia)
+EstadoDB RocksDB::almacenar(almacenamiento::IAlmacenableClaveValor* valor_a_almacenar, const std::string familia)
 {
 	std::string string_clave = valor_a_almacenar->getClave();
 	std::string string_valor = valor_a_almacenar->getValor();
@@ -105,15 +106,12 @@ EstadoDB RocksDB::almacenar(almacenamiento::IAlmacenableClaveValor* valor_a_alma
 	return estado;
 }
 
-EstadoDB RocksDB::recuperar(std::string string_clave, almacenamiento::IAlmacenableClaveValor* valor_a_recuperar)
+EstadoDB RocksDB::recuperar(std::string string_clave, std::string & valor_a_recuperar)
 {
 	rocksdb::Slice clave(string_clave);
 
 	std::string valor_recuperado;
-	rocksdb::Status estado_rocksdb = db->Get(opciones_lectura, clave, &valor_recuperado);
-
-	valor_a_recuperar->setClave(string_clave);
-	valor_a_recuperar->setValor(valor_recuperado);
+	rocksdb::Status estado_rocksdb = db->Get(opciones_lectura, clave, &valor_a_recuperar);
 
 	EstadoDB estado(estado_rocksdb);
 	return estado;
@@ -132,6 +130,20 @@ EstadoDB RocksDB::recuperar(std::string string_clave, almacenamiento::IAlmacenab
 	valor_a_recuperar->setValor(valor_recuperado);
 
 	EstadoDB estado(estado_rocksdb);
+	return estado;
+}
+
+EstadoDB RocksDB::recuperarGrupoPrefijo(std::string prefijo, std::vector<std::pair<std::string, std::string>> & valores_a_recuperar)
+{
+	rocksdb::Iterator* it = db->NewIterator(rocksdb::ReadOptions());
+	for (it->Seek(prefijo); it->Valid(); it->Next())
+	{
+		std::pair<std::string, std::string> clave_valor = std::make_pair(it->key().ToString(), it->value().ToString());
+		valores_a_recuperar.push_back(clave_valor);
+	}
+
+	EstadoDB estado(it->status());
+	delete it;
 	return estado;
 }
 

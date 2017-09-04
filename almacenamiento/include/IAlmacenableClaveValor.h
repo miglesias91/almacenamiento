@@ -13,16 +13,17 @@ class IAlmacenableClaveValor
 {
 	public:
 		IAlmacenableClaveValor();
-		IAlmacenableClaveValor(std::string clave, std::string valor, std::string familia);
+		IAlmacenableClaveValor(std::string clave, std::string valor = "", std::string grupo = "");
 		virtual ~IAlmacenableClaveValor();
 
 		// GETTERS
 
 		std::string getClave();
+		std::string getClaveConPrefijo();
 
 		std::string getValor();
 
-		std::string getFamilia();
+		std::string getGrupo();
 
 		// SETTERS
 
@@ -30,7 +31,7 @@ class IAlmacenableClaveValor
 
 		void setValor( std::string valor );
 
-		void setFamilia( std::string familia );
+		void setGrupo( std::string grupo );
 
 		// METODOS
 
@@ -42,10 +43,8 @@ class IAlmacenableClaveValor
 		// ATRIBUTOS
 
 		std::string clave;
-
 		std::string valor;
-
-		std::string familia;
+		std::string grupo;
 
 };
 };
