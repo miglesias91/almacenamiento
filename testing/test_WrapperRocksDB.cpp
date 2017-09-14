@@ -124,7 +124,7 @@ TEST(WrapperRocksDB, AlmacenarYRecuperarVariasClaves)
 }
 
 TEST(WrapperRocksDB, RecuperarPorPrefijo)
-{
+{// suponemos un prefijo habilitado y de tamanio = 3.
 	std::string clave1 = "terHola";
 	std::string clave2 = "terComo";
 	std::string clave3 = "terEstas";

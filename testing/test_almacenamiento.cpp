@@ -7,7 +7,7 @@
 
 TEST(almacenamiento, ConfigurarCorrectamente)
 { // este test tmb inicializa la db.
-	almacenamiento::ConfiguracionAlmacenamiento::leerConfiguracion("C:/Users/Manuel/Documents/Visual Studio 2015/Projects/almacenamiento/almacenamiento/configuracion_almacenamiento.json");
+	almacenamiento::ConfiguracionAlmacenamiento::leerConfiguracion("configuracion_almacenamiento.json");
 
 	ASSERT_STREQ("C:/temp/test_rocksdb", almacenamiento::ConfiguracionAlmacenamiento::pathDB().c_str());
 
@@ -17,9 +17,11 @@ TEST(almacenamiento, ConfigurarCorrectamente)
 
 	ASSERT_EQ(true, almacenamiento::ConfiguracionAlmacenamiento::prefijoHabilitado());
 
-	ASSERT_STREQ("conc", almacenamiento::ConfiguracionAlmacenamiento::prefijoConcepto().c_str());
+	ASSERT_EQ(3, almacenamiento::ConfiguracionAlmacenamiento::prefijoTamanio());
+
+	ASSERT_STREQ("con", almacenamiento::ConfiguracionAlmacenamiento::prefijoConcepto().c_str());
 	
-	ASSERT_STREQ("cons", almacenamiento::ConfiguracionAlmacenamiento::prefijoConsulta().c_str());
+	ASSERT_STREQ("con", almacenamiento::ConfiguracionAlmacenamiento::prefijoConsulta().c_str());
 
 	ASSERT_STREQ("gra", almacenamiento::ConfiguracionAlmacenamiento::prefijoGrafico().c_str());
 
@@ -34,7 +36,7 @@ TEST(almacenamiento, AlmacenarYRecuperarCorrectamente)
 	std::string valor = "valor_uno";
 	std::string grupo = "ter";
 
-	almacenamiento::IAdministradorAlmacenamiento::iniciar("C:/Users/Manuel/Documents/Visual Studio 2015/Projects/almacenamiento/almacenamiento/configuracion_almacenamiento.json");
+	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, valor, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
@@ -53,7 +55,7 @@ TEST(almacenamiento, AlmacenarYEliminarCorrectamente)
 	std::string valor = "valor_dos";
 	std::string grupo = "ter";
 
-	almacenamiento::IAdministradorAlmacenamiento::iniciar("C:/Users/Manuel/Documents/Visual Studio 2015/Projects/almacenamiento/almacenamiento/configuracion_almacenamiento.json");
+	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, valor, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
@@ -79,7 +81,7 @@ TEST(almacenamiento, AlmacenarYModificarCorrectamente)
 	std::string valor = "valor_tres";
 	std::string grupo = "ter";
 
-	almacenamiento::IAdministradorAlmacenamiento::iniciar("C:/Users/Manuel/Documents/Visual Studio 2015/Projects/almacenamiento/almacenamiento/configuracion_almacenamiento.json");
+	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, valor, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
@@ -106,7 +108,7 @@ TEST(almacenamiento, RecuperarGrupoCorrectamente)
 	std::string grupo = "ter";
 	std::vector<almacenamiento::IAlmacenableClaveValor*> valores_recuperados;
 
-	almacenamiento::IAdministradorAlmacenamiento::iniciar("C:/Users/Manuel/Documents/Visual Studio 2015/Projects/almacenamiento/almacenamiento/configuracion_almacenamiento.json");
+	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
 
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperarGrupo(grupo, valores_recuperados);
 

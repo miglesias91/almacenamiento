@@ -14,6 +14,7 @@ bool ConfiguracionAlmacenamiento::almacenamiento_local;
 bool ConfiguracionAlmacenamiento::almacenamiento_distribuido;
 
 bool ConfiguracionAlmacenamiento::prefijo_habilitado;
+unsigned int ConfiguracionAlmacenamiento::prefijo_tamanio;
 std::string ConfiguracionAlmacenamiento::prefijo_concepto;
 std::string ConfiguracionAlmacenamiento::prefijo_termino;
 std::string ConfiguracionAlmacenamiento::prefijo_consulta;
@@ -41,11 +42,19 @@ void ConfiguracionAlmacenamiento::leerConfiguracion(std::string path_archivo_con
 	almacenamiento_distribuido = config_json[ConfiguracionAlmacenamiento::tagAlmacenamientoDistribuido().c_str()].GetBool();
 
 	prefijo_habilitado = config_json[ConfiguracionAlmacenamiento::tagPrefijoHabilitado().c_str()].GetBool();
+	prefijo_tamanio = config_json[ConfiguracionAlmacenamiento::tagPrefijoTamanio().c_str()].GetUint();
+
 	prefijo_concepto = config_json[ConfiguracionAlmacenamiento::tagPrefijoConcepto().c_str()].GetString();
 	prefijo_termino = config_json[ConfiguracionAlmacenamiento::tagPrefijoTermino().c_str()].GetString();
 	prefijo_consulta = config_json[ConfiguracionAlmacenamiento::tagPrefijoConsulta().c_str()].GetString();
 	prefijo_grafico = config_json[ConfiguracionAlmacenamiento::tagPrefijoGrafico().c_str()].GetString();
 	prefijo_seccion = config_json[ConfiguracionAlmacenamiento::tagPrefijoSeccion().c_str()].GetString();
+
+	prefijo_concepto.erase(prefijo_concepto.begin() + prefijo_tamanio, prefijo_concepto.end());
+	prefijo_termino.erase(prefijo_termino.begin() + prefijo_tamanio, prefijo_termino.end());
+	prefijo_consulta.erase(prefijo_consulta.begin() + prefijo_tamanio, prefijo_consulta.end());
+	prefijo_grafico.erase(prefijo_grafico.begin() + prefijo_tamanio, prefijo_grafico.end());
+	prefijo_seccion.erase(prefijo_seccion.begin() + prefijo_tamanio, prefijo_seccion.end());
 }
 
 bool ConfiguracionAlmacenamiento::almacenamientoLocal()
@@ -61,6 +70,11 @@ bool ConfiguracionAlmacenamiento::almacenamientoDistribuido()
 bool ConfiguracionAlmacenamiento::prefijoHabilitado()
 {
 	return prefijo_habilitado;
+}
+
+unsigned int ConfiguracionAlmacenamiento::prefijoTamanio()
+{
+	return prefijo_tamanio;
 }
 
 std::string ConfiguracionAlmacenamiento::prefijoConcepto()
@@ -111,6 +125,11 @@ std::string ConfiguracionAlmacenamiento::tagAlmacenamientoDistribuido()
 std::string ConfiguracionAlmacenamiento::tagPrefijoHabilitado()
 {
 	return "prefijo_habilitado";
+}
+
+std::string ConfiguracionAlmacenamiento::tagPrefijoTamanio()
+{
+	return "prefijo_tamanio";
 }
 
 std::string almacenamiento::ConfiguracionAlmacenamiento::tagPrefijoConcepto()

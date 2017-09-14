@@ -3,6 +3,8 @@
 *.vcxproj.user
 /Debug
 */Debug
+/Release
+*/Release
 .vs/
 packages/
 x64/
