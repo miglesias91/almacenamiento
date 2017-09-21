@@ -38,10 +38,10 @@ TEST(almacenamiento, AlmacenarYRecuperarCorrectamente)
 
 	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
 
-	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, valor, grupo);
+	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, grupo, valor);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
 
-	almacenamiento::IAlmacenableClaveValor* clave_valor_recuperado = new almacenamiento::IAlmacenableClaveValor(clave, "", grupo);
+	almacenamiento::IAlmacenableClaveValor* clave_valor_recuperado = new almacenamiento::IAlmacenableClaveValor(clave, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_recuperado);
 
 	ASSERT_STREQ(clave.c_str(), clave_valor_recuperado->getClave().c_str());
@@ -57,10 +57,10 @@ TEST(almacenamiento, AlmacenarYEliminarCorrectamente)
 
 	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
 
-	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, valor, grupo);
+	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, grupo, valor);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
 
-	almacenamiento::IAlmacenableClaveValor* clave_valor_recuperado = new almacenamiento::IAlmacenableClaveValor(clave, "", grupo);
+	almacenamiento::IAlmacenableClaveValor* clave_valor_recuperado = new almacenamiento::IAlmacenableClaveValor(clave, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_recuperado);
 
 	std::string valor_recuperado_correcto = clave_valor_recuperado->getValor();
@@ -83,10 +83,10 @@ TEST(almacenamiento, AlmacenarYModificarCorrectamente)
 
 	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
 
-	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, valor, grupo);
+	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, grupo, valor);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
 
-	almacenamiento::IAlmacenableClaveValor* clave_valor_a_modificar = new almacenamiento::IAlmacenableClaveValor(clave, "", grupo);
+	almacenamiento::IAlmacenableClaveValor* clave_valor_a_modificar = new almacenamiento::IAlmacenableClaveValor(clave, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_a_modificar);
 
 	std::string valor_recuperado_correcto = clave_valor_a_modificar->getValor();

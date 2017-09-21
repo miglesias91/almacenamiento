@@ -5,19 +5,6 @@
 #include <WrapperRocksDB/include/WrapperRocksDB.h>
 #include <WrapperRocksDB/include/EstadoDB.h>
 
-// almacenamiento
-#include <almacenamiento/include/IAlmacenableClaveValor.h>
-
-class ObjetoClaveValor : public almacenamiento::IAlmacenableClaveValor
-{
-public:
-	ObjetoClaveValor(std::string clave, std::string valor, std::string familia) : IAlmacenableClaveValor(clave, valor, familia) {}
-
-	ObjetoClaveValor() {};
-
-	virtual ~ObjetoClaveValor() {};
-};
-
 TEST(WrapperRocksDB, AlmacenarRecuperarEliminarCorrectamente)
 {
 	almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
@@ -42,8 +29,6 @@ TEST(WrapperRocksDB, AlmacenarRecuperarEliminarCorrectamente)
 
 TEST(WrapperRocksDB, AlmacenarClaveExistenteConDistintoValor)
 {
-	almacenamiento::IAlmacenableClaveValor* clave_valor_a_almacenar = new ObjetoClaveValor("id2", "crisis", "");
-
 	almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
 	
 	std::string clave = "id2";
@@ -78,8 +63,6 @@ TEST(WrapperRocksDB, RecuperarClaveInexistente)
 TEST(WrapperRocksDB, EliminarClaveInexistente)
 {
 	almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
-
-	almacenamiento::IAlmacenableClaveValor* clave_valor_a_recuperar = new ObjetoClaveValor();
 
 	almacenamiento::WrapperRocksDB::EstadoDB estado = almacenamiento::WrapperRocksDB::RocksDB::eliminar("oicvonmcqw");
 
@@ -159,23 +142,3 @@ TEST(WrapperRocksDB, RecuperarPorPrefijo)
 	ASSERT_STREQ("todo_bien??", claves_valores_recuperadas[2].second.c_str());
 	ASSERT_STREQ("hola!!!", claves_valores_recuperadas[3].second.c_str());
 }
-
-/*
-TEST(WrapperRocksDB, almacenarYRecuperarConFamiliasCorrectamente)
-{
-	almacenamiento::IAlmacenableClaveValor* clave_valor_a_almacenar = new ObjetoClaveValor("id2", "conflicto", "");
-
-	almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
-
-	almacenamiento::WrapperRocksDB::RocksDB::almacenar(clave_valor_a_almacenar, "conceptos");
-
-	almacenamiento::IAlmacenableClaveValor* clave_valor_a_recuperar = new ObjetoClaveValor();
-
-	almacenamiento::WrapperRocksDB::RocksDB::recuperar("id2", clave_valor_a_recuperar, "conceptos");
-
-	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
-
-	ASSERT_STREQ("id2", clave_valor_a_recuperar->getClave().c_str());
-	ASSERT_STREQ("conflicto", clave_valor_a_recuperar->getValor().c_str());
-}
-*/

@@ -90,44 +90,12 @@ EstadoDB RocksDB::almacenar(std::string clave, std::string valor)
 	return estado;
 }
 
-EstadoDB RocksDB::almacenar(almacenamiento::IAlmacenableClaveValor* valor_a_almacenar, const std::string familia)
-{
-	std::string string_clave = valor_a_almacenar->getClave();
-	std::string string_valor = valor_a_almacenar->getValor();
-
-	rocksdb::Slice clave(string_clave);
-	rocksdb::Slice valor(string_valor);
-
-	rocksdb::ColumnFamilyHandle* handler_columna = obtenerOCrearHandlerDeFamilia(familia);
-
-	rocksdb::Status estado_rocksdb = db->Put(opciones_escritura, handler_columna, clave, valor);
-
-	EstadoDB estado(estado_rocksdb);
-	return estado;
-}
-
 EstadoDB RocksDB::recuperar(std::string string_clave, std::string & valor_a_recuperar)
 {
 	rocksdb::Slice clave(string_clave);
 
 	std::string valor_recuperado;
 	rocksdb::Status estado_rocksdb = db->Get(opciones_lectura, clave, &valor_a_recuperar);
-
-	EstadoDB estado(estado_rocksdb);
-	return estado;
-}
-
-EstadoDB RocksDB::recuperar(std::string string_clave, almacenamiento::IAlmacenableClaveValor* valor_a_recuperar, std::string familia)
-{
-	rocksdb::Slice clave(string_clave);
-
-	rocksdb::ColumnFamilyHandle* handler_columna = obtenerHandlerDeFamilia(familia);
-
-	std::string valor_recuperado;
-	rocksdb::Status estado_rocksdb = db->Get(opciones_lectura, handler_columna, clave, &valor_recuperado);
-
-	valor_a_recuperar->setClave(string_clave);
-	valor_a_recuperar->setValor(valor_recuperado);
 
 	EstadoDB estado(estado_rocksdb);
 	return estado;

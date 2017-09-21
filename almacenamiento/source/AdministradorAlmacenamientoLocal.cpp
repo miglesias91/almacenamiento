@@ -95,7 +95,7 @@ bool AdministradorAlmacenamientoLocal::recuperarGrupo(std::string prefijo_grupo,
 		clave.erase(clave.begin(), clave.begin() + ConfiguracionAlmacenamiento::prefijoTamanio()); // le borro el prefijo.
 
 		std::string valor = (*it).second;
-		valores_recuperados.push_back(new IAlmacenableClaveValor(clave, valor, prefijo_grupo));
+		valores_recuperados.push_back(new IAlmacenableClaveValor(clave, prefijo_grupo, valor));
 	}
 
 	return estado.ok();

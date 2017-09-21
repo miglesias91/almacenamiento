@@ -6,9 +6,6 @@
 // rocksdb
 #include <rocksdb/db.h>
 
-// almacenamiento
-#include <almacenamiento/include/IAlmacenableClaveValor.h>
-
 // WrapperRocksDB
 #include <WrapperRocksDB/include/EstadoDB.h>
 
@@ -38,11 +35,7 @@ class RocksDB
 
 		static EstadoDB almacenar(std::string clave, std::string valor);
 
-		static EstadoDB almacenar(almacenamiento::IAlmacenableClaveValor* valor_a_almacenar, std::string familia);
-
 		static EstadoDB recuperar(std::string clave, std::string & valor_a_recuperar);
-
-		static EstadoDB recuperar(std::string clave, almacenamiento::IAlmacenableClaveValor* valor_a_recuperar, std::string familia);
 
 		static EstadoDB recuperarGrupoPrefijo(std::string prefijo, std::vector<std::pair<std::string, std::string>> & valores_a_recuperar);
 

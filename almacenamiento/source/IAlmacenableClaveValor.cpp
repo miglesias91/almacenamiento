@@ -2,12 +2,12 @@
 
 using namespace almacenamiento;
 
-IAlmacenableClaveValor::IAlmacenableClaveValor() : clave(""), valor(""), grupo("")
+IAlmacenableClaveValor::IAlmacenableClaveValor() : clave(""), grupo(""), valor("")
 {
 }
 
 
-IAlmacenableClaveValor::IAlmacenableClaveValor(std::string clave, std::string valor, std::string grupo) : clave(clave), valor(valor), grupo(grupo)
+IAlmacenableClaveValor::IAlmacenableClaveValor(std::string clave, std::string grupo, std::string valor) : clave(clave), grupo(grupo), valor(valor)
 {
 }
 

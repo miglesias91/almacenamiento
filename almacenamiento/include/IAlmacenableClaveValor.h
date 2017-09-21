@@ -13,7 +13,7 @@ class IAlmacenableClaveValor
 {
 	public:
 		IAlmacenableClaveValor();
-		IAlmacenableClaveValor(std::string clave, std::string valor = "", std::string grupo = "");
+		IAlmacenableClaveValor(std::string clave, std::string grupo = "", std::string valor = "");
 		virtual ~IAlmacenableClaveValor();
 
 		// GETTERS
@@ -45,6 +45,5 @@ class IAlmacenableClaveValor
 		std::string clave;
 		std::string valor;
 		std::string grupo;
-
 };
 };
