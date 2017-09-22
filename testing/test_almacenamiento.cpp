@@ -14,20 +14,6 @@ TEST(almacenamiento, ConfigurarCorrectamente)
 	ASSERT_EQ(true, almacenamiento::ConfiguracionAlmacenamiento::almacenamientoLocal());
 
 	ASSERT_EQ(false, almacenamiento::ConfiguracionAlmacenamiento::almacenamientoDistribuido());
-
-	ASSERT_EQ(true, almacenamiento::ConfiguracionAlmacenamiento::prefijoHabilitado());
-
-	ASSERT_EQ(3, almacenamiento::ConfiguracionAlmacenamiento::prefijoTamanio());
-
-	ASSERT_STREQ("con", almacenamiento::ConfiguracionAlmacenamiento::prefijoConcepto().c_str());
-	
-	ASSERT_STREQ("con", almacenamiento::ConfiguracionAlmacenamiento::prefijoConsulta().c_str());
-
-	ASSERT_STREQ("gra", almacenamiento::ConfiguracionAlmacenamiento::prefijoGrafico().c_str());
-
-	ASSERT_STREQ("sec", almacenamiento::ConfiguracionAlmacenamiento::prefijoSeccion().c_str());
-
-	ASSERT_STREQ("ter", almacenamiento::ConfiguracionAlmacenamiento::prefijoTermino().c_str());
 }
 
 TEST(almacenamiento, AlmacenarYRecuperarCorrectamente)

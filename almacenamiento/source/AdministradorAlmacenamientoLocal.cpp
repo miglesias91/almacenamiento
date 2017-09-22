@@ -92,7 +92,7 @@ bool AdministradorAlmacenamientoLocal::recuperarGrupo(std::string prefijo_grupo,
 	for (std::vector<std::pair<std::string, std::string>>::iterator it = claves_valores_recuperados.begin(); it != claves_valores_recuperados.end(); it++)
 	{
 		std::string clave = (*it).first;
-		clave.erase(clave.begin(), clave.begin() + ConfiguracionAlmacenamiento::prefijoTamanio()); // le borro el prefijo.
+		clave.erase(clave.begin(), clave.begin() + prefijo_grupo.size()); // le borro el prefijo.
 
 		std::string valor = (*it).second;
 		valores_recuperados.push_back(new IAlmacenableClaveValor(clave, prefijo_grupo, valor));

@@ -1,13 +1,5 @@
 {
 	"path_db" : "C:/temp/test_rocksdb",
 	"almacenamiento_local" : true,
-	"almacenamiento_distribuido" : false,
-
-	"prefijo_habilitado" : true,
-	"prefijo_tamanio" : 3,
-	"prefijo_concepto" : "concepto",
-	"prefijo_termino" : "termino",
-	"prefijo_consulta" : "consulta",
-	"prefijo_grafico" : "grafico",
-	"prefijo_seccion" : "seccion"
+	"almacenamiento_distribuido" : false
 }
