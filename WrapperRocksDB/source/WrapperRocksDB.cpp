@@ -5,7 +5,7 @@ using namespace almacenamiento::WrapperRocksDB;
 // rocksdb
 #include <rocksdb/slice_transform.h>
 
-rocksdb::DB* RocksDB::db;
+rocksdb::DB* RocksDB::db = NULL;
 rocksdb::WriteOptions RocksDB::opciones_escritura;
 rocksdb::ReadOptions RocksDB::opciones_lectura;
 std::unordered_map<std::string, rocksdb::ColumnFamilyHandle*> RocksDB::mapa_familia_columnas;
@@ -61,8 +61,13 @@ EstadoDB RocksDB::abrirConFamilias(std::string directorio, std::vector<rocksdb::
 	return estado;
 }
 
-void RocksDB::cerrar()
+EstadoDB RocksDB::cerrar()
 {
+	if (NULL == db)
+	{
+		return rocksdb::Status::Corruption("No se creo ninguna instancia de la bd.");
+	}
+
 	for (std::unordered_map<std::string, rocksdb::ColumnFamilyHandle*>::iterator it = mapa_familia_columnas.begin(); it != mapa_familia_columnas.end(); it++)
 	{
 		rocksdb::ColumnFamilyHandle* familia = it->second;
@@ -71,6 +76,10 @@ void RocksDB::cerrar()
 		delete familia;
 	}
 	delete db;
+	db = NULL;
+
+	EstadoDB estado(rocksdb::Status::OK());
+	return estado;
 }
 
 // GETTERS
@@ -104,7 +113,7 @@ EstadoDB RocksDB::recuperar(std::string string_clave, std::string & valor_a_recu
 EstadoDB RocksDB::recuperarGrupoPrefijo(std::string prefijo, std::vector<std::pair<std::string, std::string>> & valores_a_recuperar)
 {
 	rocksdb::Iterator* it = db->NewIterator(rocksdb::ReadOptions());
-	for (it->Seek(prefijo); it->Valid(); it->Next())
+	for (it->Seek(prefijo); it->Valid() && it->key().starts_with(prefijo); it->Next())
 	{
 		std::pair<std::string, std::string> clave_valor = std::make_pair(it->key().ToString(), it->value().ToString());
 		valores_a_recuperar.push_back(clave_valor);

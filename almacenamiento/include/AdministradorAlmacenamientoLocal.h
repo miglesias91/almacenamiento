@@ -21,6 +21,10 @@ class AdministradorAlmacenamientoLocal : public IAdministradorAlmacenamiento
 
 		// METODOS
 
+		virtual bool abrir();
+
+		virtual bool cerrar();
+
 		virtual bool almacenar(IAlmacenableClaveValor* valor_a_almacenar);
 
 		virtual bool recuperar(IAlmacenableClaveValor* valor_recuperado);

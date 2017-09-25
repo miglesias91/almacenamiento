@@ -108,10 +108,10 @@ TEST(WrapperRocksDB, AlmacenarYRecuperarVariasClaves)
 
 TEST(WrapperRocksDB, RecuperarPorPrefijo)
 {// suponemos un prefijo habilitado y de tamanio = 3.
-	std::string clave1 = "terHola";
-	std::string clave2 = "terComo";
-	std::string clave3 = "terEstas";
-	std::string clave4 = "terChau";
+	std::string clave1 = "abcHola";
+	std::string clave2 = "abcComo";
+	std::string clave3 = "abcEstas";
+	std::string clave4 = "abcChau";
 
 	std::string valor1 = "hola!!!";
 	std::string valor2 = "como_estas??";
@@ -127,18 +127,25 @@ TEST(WrapperRocksDB, RecuperarPorPrefijo)
 
 	std::vector<std::pair<std::string, std::string>> claves_valores_recuperadas;
 
-	almacenamiento::WrapperRocksDB::RocksDB::recuperarGrupoPrefijo("ter", claves_valores_recuperadas);
+	almacenamiento::WrapperRocksDB::RocksDB::recuperarGrupoPrefijo("abc", claves_valores_recuperadas);
 
 	almacenamiento::WrapperRocksDB::RocksDB::cerrar();
 
 	// tienen este orden porque INTERNAMENTE estan ordenados alfabeticamente segun la clave.
-	ASSERT_STREQ("terChau", claves_valores_recuperadas[0].first.c_str());
-	ASSERT_STREQ("terComo", claves_valores_recuperadas[1].first.c_str());
-	ASSERT_STREQ("terEstas", claves_valores_recuperadas[2].first.c_str());
-	ASSERT_STREQ("terHola", claves_valores_recuperadas[3].first.c_str());
+	ASSERT_STREQ("abcChau", claves_valores_recuperadas[0].first.c_str());
+	ASSERT_STREQ("abcComo", claves_valores_recuperadas[1].first.c_str());
+	ASSERT_STREQ("abcEstas", claves_valores_recuperadas[2].first.c_str());
+	ASSERT_STREQ("abcHola", claves_valores_recuperadas[3].first.c_str());
 
 	ASSERT_STREQ("chau!!", claves_valores_recuperadas[0].second.c_str());
 	ASSERT_STREQ("como_estas??", claves_valores_recuperadas[1].second.c_str());
 	ASSERT_STREQ("todo_bien??", claves_valores_recuperadas[2].second.c_str());
 	ASSERT_STREQ("hola!!!", claves_valores_recuperadas[3].second.c_str());
+}
+
+TEST(WrapperRocksDB, CerrarBDInexistente)
+{
+	almacenamiento::WrapperRocksDB::EstadoDB estado_cerrada = almacenamiento::WrapperRocksDB::RocksDB::cerrar();
+
+	ASSERT_EQ(false, estado_cerrada.ok());
 }

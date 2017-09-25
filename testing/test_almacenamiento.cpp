@@ -20,15 +20,19 @@ TEST(almacenamiento, AlmacenarYRecuperarCorrectamente)
 {
 	std::string clave = "id_uno";
 	std::string valor = "valor_uno";
-	std::string grupo = "ter";
+	std::string grupo = "abc";
 
 	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
+
+	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->abrir();
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, grupo, valor);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor_recuperado = new almacenamiento::IAlmacenableClaveValor(clave, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_recuperado);
+
+	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->cerrar();
 
 	ASSERT_STREQ(clave.c_str(), clave_valor_recuperado->getClave().c_str());
 	ASSERT_STREQ(valor.c_str(), clave_valor_recuperado->getValor().c_str());
@@ -39,9 +43,11 @@ TEST(almacenamiento, AlmacenarYEliminarCorrectamente)
 {
 	std::string clave = "id_dos";
 	std::string valor = "valor_dos";
-	std::string grupo = "ter";
+	std::string grupo = "abc";
 
 	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
+
+	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->abrir();
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, grupo, valor);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
@@ -57,6 +63,8 @@ TEST(almacenamiento, AlmacenarYEliminarCorrectamente)
 
 	std::string valor_recuperado_eliminado = clave_valor_recuperado->getValor();
 
+	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->cerrar();
+
 	ASSERT_STREQ(valor.c_str(), valor_recuperado_correcto.c_str());
 	ASSERT_STREQ("", valor_recuperado_eliminado.c_str());
 }
@@ -65,9 +73,11 @@ TEST(almacenamiento, AlmacenarYModificarCorrectamente)
 {
 	std::string clave = "id_tres";
 	std::string valor = "valor_tres";
-	std::string grupo = "ter";
+	std::string grupo = "abc";
 
 	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
+
+	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->abrir();
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, grupo, valor);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
@@ -85,28 +95,34 @@ TEST(almacenamiento, AlmacenarYModificarCorrectamente)
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_a_modificar);
 	std::string valor_modificado_correcto = clave_valor_a_modificar->getValor();
 
+	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->cerrar();
+
 	ASSERT_STREQ(valor.c_str(), valor_recuperado_correcto.c_str());
 	ASSERT_STREQ(valor_modificado.c_str(), valor_modificado_correcto.c_str());
 }
 
 TEST(almacenamiento, RecuperarGrupoCorrectamente)
 {
-	std::string grupo = "ter";
+	std::string grupo = "abc";
 	std::vector<almacenamiento::IAlmacenableClaveValor*> valores_recuperados;
 
 	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
 
+	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->abrir();
+
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperarGrupo(grupo, valores_recuperados);
+
+	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->cerrar();
 
 	ASSERT_EQ(6, valores_recuperados.size());
 
 	ASSERT_STREQ("id_tres", valores_recuperados[4]->getClave().c_str());
 	ASSERT_STREQ("valor_modif_tres", valores_recuperados[4]->getValor().c_str());
-	ASSERT_STREQ("ter", valores_recuperados[4]->getGrupo().c_str());
-	ASSERT_STREQ("terid_tres", valores_recuperados[4]->getClaveConPrefijo().c_str());
+	ASSERT_STREQ("abc", valores_recuperados[4]->getGrupo().c_str());
+	ASSERT_STREQ("abcid_tres", valores_recuperados[4]->getClaveConPrefijo().c_str());
 
 	ASSERT_STREQ("id_uno", valores_recuperados[5]->getClave().c_str());
 	ASSERT_STREQ("valor_uno", valores_recuperados[5]->getValor().c_str());
-	ASSERT_STREQ("ter", valores_recuperados[5]->getGrupo().c_str());
-	ASSERT_STREQ("terid_uno", valores_recuperados[5]->getClaveConPrefijo().c_str());
+	ASSERT_STREQ("abc", valores_recuperados[5]->getGrupo().c_str());
+	ASSERT_STREQ("abcid_uno", valores_recuperados[5]->getClaveConPrefijo().c_str());
 }

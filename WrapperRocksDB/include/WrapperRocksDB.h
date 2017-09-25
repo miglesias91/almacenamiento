@@ -25,7 +25,7 @@ class RocksDB
 
 		static EstadoDB abrirConFamilias(std::string directorio, std::vector<rocksdb::ColumnFamilyDescriptor> descriptores_columnas);
 
-		static void cerrar();
+		static EstadoDB cerrar();
 
 		// GETTERS
 
