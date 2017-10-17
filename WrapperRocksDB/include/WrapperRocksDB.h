@@ -21,10 +21,6 @@ class RocksDB
 
 		static EstadoDB abrir(std::string directorio);
 
-		static EstadoDB abrirConColumnas(std::string directorio);
-
-		static EstadoDB abrirConFamilias(std::string directorio, std::vector<rocksdb::ColumnFamilyDescriptor> descriptores_columnas);
-
 		static EstadoDB cerrar();
 
 		// GETTERS
@@ -49,15 +45,6 @@ class RocksDB
 		RocksDB();
 		virtual ~RocksDB();
 
-		static rocksdb::ColumnFamilyHandle* obtenerOCrearHandlerDeFamilia(std::string familia);
-
-		static rocksdb::ColumnFamilyHandle* crearHandlerDeFamilia(std::string familia);
-
-		static rocksdb::ColumnFamilyHandle* obtenerHandlerDeFamilia(std::string familia);
-
-		static std::vector<rocksdb::ColumnFamilyDescriptor> obtenerDescriptoresDeFamilias(std::string directorio);
-
-		static void completarMapaDeHandlers(std::vector<rocksdb::ColumnFamilyHandle*> handlers);
 		// ATRIBUTOS
 
 		static rocksdb::DB* db;
@@ -66,7 +53,6 @@ class RocksDB
 
 		static std::string directorio;
 
-		static std::unordered_map<std::string, rocksdb::ColumnFamilyHandle*> mapa_familia_columnas;
 };
 };
 };
