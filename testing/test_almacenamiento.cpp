@@ -28,6 +28,7 @@ TEST(almacenamiento, AlmacenarYRecuperarCorrectamente)
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, grupo, valor);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
+	delete clave_valor;
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor_recuperado = new almacenamiento::IAlmacenableClaveValor(clave, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_recuperado);
@@ -37,6 +38,9 @@ TEST(almacenamiento, AlmacenarYRecuperarCorrectamente)
 	ASSERT_STREQ(clave.c_str(), clave_valor_recuperado->getClave().c_str());
 	ASSERT_STREQ(valor.c_str(), clave_valor_recuperado->getValor().c_str());
 	ASSERT_STREQ((grupo + clave).c_str(), clave_valor_recuperado->getClaveConPrefijo().c_str());
+	delete clave_valor_recuperado;
+
+	almacenamiento::IAdministradorAlmacenamiento::liberar();
 }
 
 TEST(almacenamiento, AlmacenarYEliminarCorrectamente)
@@ -51,6 +55,7 @@ TEST(almacenamiento, AlmacenarYEliminarCorrectamente)
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, grupo, valor);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
+	delete clave_valor;
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor_recuperado = new almacenamiento::IAlmacenableClaveValor(clave, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_recuperado);
@@ -62,8 +67,11 @@ TEST(almacenamiento, AlmacenarYEliminarCorrectamente)
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_recuperado);
 
 	std::string valor_recuperado_eliminado = clave_valor_recuperado->getValor();
+	delete clave_valor_recuperado;
 
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->cerrar();
+
+	almacenamiento::IAdministradorAlmacenamiento::liberar();
 
 	ASSERT_STREQ(valor.c_str(), valor_recuperado_correcto.c_str());
 	ASSERT_STREQ("", valor_recuperado_eliminado.c_str());
@@ -81,6 +89,7 @@ TEST(almacenamiento, AlmacenarYModificarCorrectamente)
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor = new almacenamiento::IAlmacenableClaveValor(clave, grupo, valor);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->almacenar(clave_valor);
+	delete clave_valor;
 
 	almacenamiento::IAlmacenableClaveValor* clave_valor_a_modificar = new almacenamiento::IAlmacenableClaveValor(clave, grupo);
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_a_modificar);
@@ -94,8 +103,11 @@ TEST(almacenamiento, AlmacenarYModificarCorrectamente)
 
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperar(clave_valor_a_modificar);
 	std::string valor_modificado_correcto = clave_valor_a_modificar->getValor();
+	delete clave_valor_a_modificar;
 
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->cerrar();
+
+	almacenamiento::IAdministradorAlmacenamiento::liberar();
 
 	ASSERT_STREQ(valor.c_str(), valor_recuperado_correcto.c_str());
 	ASSERT_STREQ(valor_modificado.c_str(), valor_modificado_correcto.c_str());
@@ -125,4 +137,12 @@ TEST(almacenamiento, RecuperarGrupoCorrectamente)
 	ASSERT_STREQ("valor_uno", valores_recuperados[5]->getValor().c_str());
 	ASSERT_STREQ("abc", valores_recuperados[5]->getGrupo().c_str());
 	ASSERT_STREQ("abcid_uno", valores_recuperados[5]->getClaveConPrefijo().c_str());
+
+	almacenamiento::IAdministradorAlmacenamiento::liberar();
+
+	for (std::vector<almacenamiento::IAlmacenableClaveValor*>::iterator it = valores_recuperados.begin(); it != valores_recuperados.end(); it++)
+	{
+		delete (*it);
+	}
+	valores_recuperados.clear();
 }

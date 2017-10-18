@@ -38,6 +38,7 @@ void IAdministradorAlmacenamiento::liberar()
 	if (true == administradorIniciado())
 	{
 		delete administrador;
+		administrador = NULL;
 	}
 }
 

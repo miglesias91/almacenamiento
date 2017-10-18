@@ -54,7 +54,6 @@ bool AdministradorAlmacenamientoLocal::recuperar(std::vector<IAlmacenableClaveVa
 
 		if (false == estado.ok())
 		{
-			WrapperRocksDB::RocksDB::cerrar();
 			return estado.ok();
 		}
 	}
@@ -70,7 +69,6 @@ bool AdministradorAlmacenamientoLocal::recuperarGrupo(std::string prefijo_grupo,
 
 	if ( false == estado.ok())
 	{
-		WrapperRocksDB::RocksDB::cerrar();
 		return estado.ok();
 	}
 
