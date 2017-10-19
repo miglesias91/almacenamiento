@@ -11,7 +11,12 @@ rocksdb::ReadOptions RocksDB::opciones_lectura;
 
 EstadoDB RocksDB::abrir(std::string directorio)
 {
+	rocksdb::Env* env = rocksdb::Env::Default();
+	env->SetBackgroundThreads(2, rocksdb::Env::LOW);
+	env->SetBackgroundThreads(1, rocksdb::Env::HIGH);
+	
 	rocksdb::Options options;
+	options.env = env;
 	options.IncreaseParallelism();
 	options.create_if_missing = true;
 	options.prefix_extractor.reset(rocksdb::NewFixedPrefixTransform(3));
@@ -60,8 +65,6 @@ EstadoDB RocksDB::recuperar(std::string string_clave, std::string & valor_a_recu
 
 	// rocksdb::Status estado_rocksdb = db->Get(opciones_lectura, clave, &valor_a_recuperar);
 	rocksdb::Status estado_rocksdb = db->Get(opciones_lectura, db->DefaultColumnFamily(), clave, &valor);
-
-	// valor_a_recuperar = valor.data();
 
 	EstadoDB estado(estado_rocksdb);
 	return estado;
