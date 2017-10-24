@@ -7,8 +7,6 @@
 
 TEST(WrapperRocksDB, AlmacenarRecuperarEliminarCorrectamente)
 {
-	// almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
-
 	std::string clave = "id1";
 	std::string valor = "valor2";
 	almacenamiento::WrapperRocksDB::RocksDB::almacenar(clave, valor);
@@ -21,16 +19,12 @@ TEST(WrapperRocksDB, AlmacenarRecuperarEliminarCorrectamente)
 	std::string valor_a_recuperar_2 = "";
 	almacenamiento::WrapperRocksDB::RocksDB::recuperar("id1", valor_a_recuperar_2);
 
-	// almacenamiento::WrapperRocksDB::RocksDB::cerrar();
-
 	ASSERT_STREQ("valor2", valor_a_recuperar_1.c_str());
 	ASSERT_STREQ("", valor_a_recuperar_2.c_str());
 }
 
 TEST(WrapperRocksDB, AlmacenarClaveExistenteConDistintoValor)
 {
-	// almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
-	
 	std::string clave = "id2";
 	std::string valor = "valor2";
 	almacenamiento::WrapperRocksDB::RocksDB::almacenar(clave, valor);
@@ -41,20 +35,14 @@ TEST(WrapperRocksDB, AlmacenarClaveExistenteConDistintoValor)
 	std::string clave_valor_a_recuperar = "";
 	almacenamiento::WrapperRocksDB::RocksDB::recuperar("id2", clave_valor_a_recuperar);
 
-	// almacenamiento::WrapperRocksDB::RocksDB::cerrar();
-
 	ASSERT_EQ(true, estado.ok());
 	ASSERT_STREQ("valor2_2", clave_valor_a_recuperar.c_str());
 }
 
 TEST(WrapperRocksDB, RecuperarClaveInexistente)
 {
-	// almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
-
 	std::string clave_valor_a_recuperar = "";
 	almacenamiento::WrapperRocksDB::EstadoDB estado = almacenamiento::WrapperRocksDB::RocksDB::recuperar("knascjonaw", clave_valor_a_recuperar);
-
-	// almacenamiento::WrapperRocksDB::RocksDB::cerrar();
 
 	ASSERT_NE(true, estado.ok());
 	ASSERT_STREQ("", clave_valor_a_recuperar.c_str());
@@ -62,18 +50,13 @@ TEST(WrapperRocksDB, RecuperarClaveInexistente)
 
 TEST(WrapperRocksDB, EliminarClaveInexistente)
 {
-	// almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
-
 	almacenamiento::WrapperRocksDB::EstadoDB estado = almacenamiento::WrapperRocksDB::RocksDB::eliminar("oicvonmcqw");
-
-	// almacenamiento::WrapperRocksDB::RocksDB::cerrar();
 
 	ASSERT_EQ(true, estado.ok());
 }
 
 TEST(WrapperRocksDB, AlmacenarYRecuperarVariasClaves)
 {
-	// almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
 	std::string clave1 = "idA";
 	std::string clave2 = "idB";
 	std::string clave3 = "idC";
@@ -99,8 +82,6 @@ TEST(WrapperRocksDB, AlmacenarYRecuperarVariasClaves)
 	almacenamiento::WrapperRocksDB::RocksDB::recuperar(clave3, valor_recuperado2);
 	almacenamiento::WrapperRocksDB::RocksDB::recuperar(clave4, valor_recuperado3);
 
-	// almacenamiento::WrapperRocksDB::RocksDB::cerrar();
-
 	ASSERT_STREQ("valorB", valor_recuperado1.c_str());
 	ASSERT_STREQ("valorC", valor_recuperado2.c_str());
 	ASSERT_STREQ("valorD", valor_recuperado3.c_str());
@@ -118,8 +99,6 @@ TEST(WrapperRocksDB, RecuperarPorPrefijo)
 	std::string valor3 = "todo_bien??";
 	std::string valor4 = "chau!!";
 
-	// almacenamiento::WrapperRocksDB::RocksDB::abrir("C:/temp/test_rocksdb");
-	
 	almacenamiento::WrapperRocksDB::RocksDB::almacenar(clave1, valor1);
 	almacenamiento::WrapperRocksDB::RocksDB::almacenar(clave2, valor2);
 	almacenamiento::WrapperRocksDB::RocksDB::almacenar(clave3, valor3);
