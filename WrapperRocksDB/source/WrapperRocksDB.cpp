@@ -61,9 +61,8 @@ EstadoDB RocksDB::almacenar(std::string clave, std::string valor)
 EstadoDB RocksDB::recuperar(std::string string_clave, std::string & valor_a_recuperar)
 {
 	rocksdb::Slice clave(string_clave);
-	rocksdb::PinnableSlice valor(&valor_a_recuperar);
 
-	rocksdb::Status estado_rocksdb = db->Get(opciones_lectura, db->DefaultColumnFamily(), clave, &valor);
+	rocksdb::Status estado_rocksdb = db->Get(opciones_lectura, db->DefaultColumnFamily(), clave, &valor_a_recuperar);
 
 	EstadoDB estado(estado_rocksdb);
 	return estado;
