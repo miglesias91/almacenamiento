@@ -6,13 +6,17 @@
 // almacenamiento
 #include <almacenamiento/include/IAdministradorAlmacenamiento.h>
 
+// wrapper rocksdb
+#include <WrapperRocksDB/include/EstadoDB.h>
+#include <WrapperRocksDB/include/WrapperRocksDB.h>
+
 namespace almacenamiento
 {
 
 class AdministradorAlmacenamientoLocal : public IAdministradorAlmacenamiento
 {
 	public:
-		AdministradorAlmacenamientoLocal(std::string directorio);
+		AdministradorAlmacenamientoLocal(std::string directorio = "");
 		virtual ~AdministradorAlmacenamientoLocal();
 
 		// GETTERS
@@ -24,6 +28,8 @@ class AdministradorAlmacenamientoLocal : public IAdministradorAlmacenamiento
 		virtual bool abrir();
 
 		virtual bool cerrar();
+
+        virtual bool borrar();
 
 		virtual bool almacenar(IAlmacenableClaveValor* valor_a_almacenar);
 
@@ -41,9 +47,16 @@ class AdministradorAlmacenamientoLocal : public IAdministradorAlmacenamiento
 
 		virtual bool existe(IAlmacenableClaveValor* clave_a_chequear);
 
+        virtual bool bdAbierta();
+
 	private:
 		// METODOS INTERNOS
 
 		// ATRIBUTOS
+        WrapperRocksDB::RocksDB rocksdb_instancia;
+
+        std::string directorio;
+
+        bool abierto;
 };
 };

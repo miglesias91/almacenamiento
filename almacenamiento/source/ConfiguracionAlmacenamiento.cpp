@@ -29,9 +29,11 @@ void ConfiguracionAlmacenamiento::leerConfiguracion(std::string path_archivo_con
 	rapidjson::Document config_json;
 	config_json.Parse(string_config.c_str());
 
-	path_db = config_json[ConfiguracionAlmacenamiento::tagPathDB().c_str()].GetString();
-	almacenamiento_local = config_json[ConfiguracionAlmacenamiento::tagAlmacenamientoLocal().c_str()].GetBool();
-	almacenamiento_distribuido = config_json[ConfiguracionAlmacenamiento::tagAlmacenamientoDistribuido().c_str()].GetBool();
+    rapidjson::Value & config_almacenamiento_json = config_json["almacenamiento"];
+
+	path_db = config_almacenamiento_json[ConfiguracionAlmacenamiento::tagPathDB().c_str()].GetString();
+	almacenamiento_local = config_almacenamiento_json[ConfiguracionAlmacenamiento::tagAlmacenamientoLocal().c_str()].GetBool();
+	almacenamiento_distribuido = config_almacenamiento_json[ConfiguracionAlmacenamiento::tagAlmacenamientoDistribuido().c_str()].GetBool();
 }
 
 bool ConfiguracionAlmacenamiento::almacenamientoLocal()

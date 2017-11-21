@@ -4,12 +4,13 @@
 // almacenamiento
 #include <almacenamiento/include/ConfiguracionAlmacenamiento.h>
 #include <almacenamiento/include/IAdministradorAlmacenamiento.h>
+#include <almacenamiento/include/AdministradorAlmacenamientoLocal.h>
 
 TEST(almacenamiento, ConfigurarCorrectamente)
 { // este test tmb inicializa la db.
-	almacenamiento::ConfiguracionAlmacenamiento::leerConfiguracion("configuracion_almacenamiento.json");
+	almacenamiento::ConfiguracionAlmacenamiento::leerConfiguracion("config_testing.json");
 
-	ASSERT_STREQ("C:/temp/test_rocksdb", almacenamiento::ConfiguracionAlmacenamiento::pathDB().c_str());
+	ASSERT_STREQ("C:/temp/db_almacenamiento--testing--debug", almacenamiento::ConfiguracionAlmacenamiento::pathDB().c_str());
 
 	ASSERT_EQ(true, almacenamiento::ConfiguracionAlmacenamiento::almacenamientoLocal());
 
@@ -97,21 +98,37 @@ TEST(almacenamiento, RecuperarGrupoCorrectamente)
 
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->recuperarGrupo(grupo, valores_recuperados);
 
-	ASSERT_EQ(6, valores_recuperados.size());
+	ASSERT_EQ(2, valores_recuperados.size());
 
-	ASSERT_STREQ("id_tres", valores_recuperados[4]->getClave().c_str());
-	ASSERT_STREQ("valor_modif_tres", valores_recuperados[4]->getValor().c_str());
-	ASSERT_STREQ("abc", valores_recuperados[4]->getGrupo().c_str());
-	ASSERT_STREQ("abcid_tres", valores_recuperados[4]->getClaveConPrefijo().c_str());
+	ASSERT_STREQ("id_tres", valores_recuperados[0]->getClave().c_str());
+	ASSERT_STREQ("valor_modif_tres", valores_recuperados[0]->getValor().c_str());
+	ASSERT_STREQ("abc", valores_recuperados[0]->getGrupo().c_str());
+	ASSERT_STREQ("abcid_tres", valores_recuperados[0]->getClaveConPrefijo().c_str());
 
-	ASSERT_STREQ("id_uno", valores_recuperados[5]->getClave().c_str());
-	ASSERT_STREQ("valor_uno", valores_recuperados[5]->getValor().c_str());
-	ASSERT_STREQ("abc", valores_recuperados[5]->getGrupo().c_str());
-	ASSERT_STREQ("abcid_uno", valores_recuperados[5]->getClaveConPrefijo().c_str());
+	ASSERT_STREQ("id_uno", valores_recuperados[1]->getClave().c_str());
+	ASSERT_STREQ("valor_uno", valores_recuperados[1]->getValor().c_str());
+	ASSERT_STREQ("abc", valores_recuperados[1]->getGrupo().c_str());
+	ASSERT_STREQ("abcid_uno", valores_recuperados[1]->getClaveConPrefijo().c_str());
 
 	for (std::vector<almacenamiento::IAlmacenableClaveValor*>::iterator it = valores_recuperados.begin(); it != valores_recuperados.end(); it++)
 	{
 		delete (*it);
 	}
 	valores_recuperados.clear();
+}
+
+TEST(almacenamiento, AbrirYBorrarBDLocalCorrectamente)
+{
+    almacenamiento::AdministradorAlmacenamientoLocal admin_local("C:/temp/db_almacenamiento--testing--debug_PARA_BORRAR");
+
+    admin_local.abrir();
+
+    bool borrado_error = !admin_local.borrar();
+
+    admin_local.cerrar();
+
+    bool borrado_ok = admin_local.borrar();
+    
+    ASSERT_EQ(true, borrado_error);
+    ASSERT_EQ(true, borrado_ok);
 }

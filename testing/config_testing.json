@@ -1,0 +1,25 @@
+{
+    "aplicacion" :
+    {
+        "aplicacion_local" : true,
+        "aplicacion_distribuida" : false,
+        "prefijo_habilitado" : true,
+        "prefijo_tamanio" : 3,
+        "prefijo_configuracion" : "000",
+        "prefijo_concepto" : "001",
+        "prefijo_termino" : "002",
+        "prefijo_consulta" : "003",
+        "prefijo_reporte" : "004",
+        "prefijo_seccion" : "005",
+        "prefijo_fecha" : "006",
+        "prefijo_periodo" : "007",
+        "prefijo_medio" : "008"
+    },
+
+    "almacenamiento" :
+    {
+        "path_db" : "C:/temp/db_almacenamiento--testing--debug",
+        "almacenamiento_local" : true,
+        "almacenamiento_distribuido" : false
+    }
+}

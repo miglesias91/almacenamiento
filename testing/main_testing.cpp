@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 {
 	::testing::InitGoogleTest(&argc, argv);
 
-	almacenamiento::IAdministradorAlmacenamiento::iniciar("configuracion_almacenamiento.json");
+	almacenamiento::IAdministradorAlmacenamiento::iniciar("config_testing.json");
 
 	almacenamiento::IAdministradorAlmacenamiento::getInstancia()->abrir();
 

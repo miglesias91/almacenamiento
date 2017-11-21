@@ -4,10 +4,10 @@ using namespace almacenamiento::WrapperRocksDB;
 
 // rocksdb
 #include <rocksdb/slice_transform.h>
-
-rocksdb::DB* RocksDB::db = NULL;
-rocksdb::WriteOptions RocksDB::opciones_escritura;
-rocksdb::ReadOptions RocksDB::opciones_lectura;
+//
+//rocksdb::DB* RocksDB::db = NULL;
+//rocksdb::WriteOptions RocksDB::opciones_escritura;
+//rocksdb::ReadOptions RocksDB::opciones_lectura;
 
 EstadoDB RocksDB::abrir(std::string directorio)
 {
@@ -39,6 +39,11 @@ EstadoDB RocksDB::cerrar()
 
 	EstadoDB estado(rocksdb::Status::OK());
 	return estado;
+}
+
+EstadoDB RocksDB::borrar()
+{
+    return EstadoDB();
 }
 
 // GETTERS
@@ -96,7 +101,7 @@ EstadoDB RocksDB::eliminar(std::string clave)
 
 // METODOS INTERNOS
 
-RocksDB::RocksDB()
+RocksDB::RocksDB() : db(NULL)
 {
 }
 

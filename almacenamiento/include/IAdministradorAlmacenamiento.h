@@ -12,31 +12,35 @@
 namespace almacenamiento
 {
 
-class IAdministradorAlmacenamiento
-{
-	public:
+    class IAdministradorAlmacenamiento
+    {
+    public:
+        IAdministradorAlmacenamiento();
+        virtual ~IAdministradorAlmacenamiento();
 
-		static void iniciar(std::string path_configuracion);
+        static void iniciar(std::string path_configuracion);
 
-		static void liberar();
+        static void liberar();
 
-		static void crearAdministradorAlmacenamientoLocal();
+        static void crearAdministradorAlmacenamientoLocal();
 
-		static void crearAdministradorAlmacenamientoDistribuido();
+        static void crearAdministradorAlmacenamientoDistribuido();
 
-		static bool administradorIniciado();
+        static bool administradorIniciado();
 
-		// GETTERS
+        // GETTERS
 
-		static IAdministradorAlmacenamiento* getInstancia();
+        static IAdministradorAlmacenamiento* getInstancia();
 
-		// SETTERS
+        // SETTERS
 
-		// METODOS
+        // METODOS
 
-		virtual bool abrir() = 0;
+        virtual bool abrir() = 0;
 
-		virtual bool cerrar() = 0;
+        virtual bool cerrar() = 0;
+
+        virtual bool borrar() = 0;
 
 		virtual bool almacenar(IAlmacenableClaveValor* valor_a_almacenar) = 0;
 
@@ -53,6 +57,8 @@ class IAdministradorAlmacenamiento
 		// CONSULTA
 
 		virtual bool existe(IAlmacenableClaveValor* clave_a_chequear) = 0;
+
+        virtual bool bdAbierta() = 0;
 
 	private:
 		// METODOS INTERNOS

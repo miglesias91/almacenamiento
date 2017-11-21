@@ -11,6 +11,14 @@ using namespace almacenamiento;
 
 IAdministradorAlmacenamiento* IAdministradorAlmacenamiento::administrador = NULL;
 
+IAdministradorAlmacenamiento::IAdministradorAlmacenamiento()
+{
+}
+
+IAdministradorAlmacenamiento::~IAdministradorAlmacenamiento()
+{
+}
+
 void IAdministradorAlmacenamiento::iniciar(std::string path_configuracion)
 {
 	if (administradorIniciado())
