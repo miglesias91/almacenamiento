@@ -13,7 +13,16 @@
         "prefijo_seccion" : "005",
         "prefijo_fecha" : "006",
         "prefijo_periodo" : "007",
-        "prefijo_medio" : "008"
+        "prefijo_medio" : "008",
+
+        "prefijo_relaciones_concepto" : "009",
+        "prefijo_relaciones_termino" : "010",
+        "prefijo_relaciones_consulta" : "011",
+        "prefijo_relaciones_reporte" : "012",
+        "prefijo_relaciones_seccion" : "013",
+        "prefijo_relaciones_fecha" : "014",
+        "prefijo_relaciones_periodo" : "015",
+        "prefijo_relaciones_medio" : "016",
     },
 
     "almacenamiento" :
