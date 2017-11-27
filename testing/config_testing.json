@@ -22,7 +22,7 @@
         "prefijo_relaciones_seccion" : "013",
         "prefijo_relaciones_fecha" : "014",
         "prefijo_relaciones_periodo" : "015",
-        "prefijo_relaciones_medio" : "016",
+        "prefijo_relaciones_medio" : "016"
     },
 
     "almacenamiento" :
