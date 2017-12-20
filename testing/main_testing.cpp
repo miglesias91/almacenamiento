@@ -2,8 +2,10 @@
 // gtest
 #include <gtest/gtest.h>
 
+#ifdef DEBUG | _DEBUG
 // vld
 #include <vld.h>
+#endif
 
 // almacenamiento
 #include <almacenamiento/include/IAdministradorAlmacenamiento.h>
