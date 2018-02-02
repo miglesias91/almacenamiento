@@ -16,7 +16,7 @@ namespace almacenamiento
 class AdministradorAlmacenamientoLocal : public IAdministradorAlmacenamiento
 {
 	public:
-		AdministradorAlmacenamientoLocal(std::string directorio = "");
+		AdministradorAlmacenamientoLocal(ConfiguracionAlmacenamiento * configuracion);
 		virtual ~AdministradorAlmacenamientoLocal();
 
 		// GETTERS

@@ -5,8 +5,10 @@
 
 // stl
 #include <vector>
+#include <unordered_map>
 
 // almacenamiento
+#include <almacenamiento/include/ConfiguracionAlmacenamiento.h>
 #include <almacenamiento/include/IAlmacenableClaveValor.h>
 
 namespace almacenamiento
@@ -15,22 +17,27 @@ namespace almacenamiento
     class IAdministradorAlmacenamiento
     {
     public:
-        IAdministradorAlmacenamiento();
+
+        IAdministradorAlmacenamiento(ConfiguracionAlmacenamiento * configuracion);
         virtual ~IAdministradorAlmacenamiento();
 
-        static void iniciar(std::string path_configuracion);
+        static unsigned long long int iniciarNuevo(std::string path_configuracion);
 
-        static void liberar();
+        static void liberarTodos();
 
-        static void crearAdministradorAlmacenamientoLocal();
+        static void liberar(unsigned long long int handler);
 
-        static void crearAdministradorAlmacenamientoDistribuido();
+        static void crearAdministradorAlmacenamientoLocal(unsigned long long int handler, ConfiguracionAlmacenamiento * configuracion);
 
-        static bool administradorIniciado();
+        static void crearAdministradorAlmacenamientoDistribuido(unsigned long long int handler, ConfiguracionAlmacenamiento * configuracion);
+
+        static bool administradorIniciado(unsigned long long int handler);
 
         // GETTERS
 
-        static IAdministradorAlmacenamiento* getInstancia();
+        static IAdministradorAlmacenamiento* getInstancia(unsigned long long int handler);
+
+        static IAdministradorAlmacenamiento* getInstancia(std::string path_db);
 
         // SETTERS
 
@@ -60,10 +67,15 @@ namespace almacenamiento
 
         virtual bool bdAbierta() = 0;
 
+    protected:
+
+        ConfiguracionAlmacenamiento * configuracion;
+
 	private:
 		// METODOS INTERNOS
 
 		// ATRIBUTOS
-		static IAdministradorAlmacenamiento* administrador;
+
+        static std::unordered_map<unsigned long long int, IAdministradorAlmacenamiento*> mapa_administradores;
 };
 };

@@ -9,26 +9,32 @@ class ConfiguracionAlmacenamiento
 {
 public:
 
-	static void leerConfiguracion(std::string path_archivo_configuracion);
+    ConfiguracionAlmacenamiento(std::string path_archivo_configuracion = "");
+    virtual ~ConfiguracionAlmacenamiento();
 
-	// CONFIGURACIONES
+    // METODOS
 
-	static std::string pathDB();
-	static bool almacenamientoLocal();
-	static bool almacenamientoDistribuido();
+    void leerConfiguracion(std::string path_archivo_configuracion);
 
-	// TAGS
+    // CONFIGURACIONES
 
-	static std::string tagPathDB();
-	static std::string tagAlmacenamientoLocal();
-	static std::string tagAlmacenamientoDistribuido();
+    std::string pathDB();
+
+    void pathDB(std::string path_db);
+
+    bool almacenamientoLocal();
+    bool almacenamientoDistribuido();
+
+    // TAGS
+
+    std::string tagPathDB();
+    std::string tagAlmacenamientoLocal();
+    std::string tagAlmacenamientoDistribuido();
 
 private:
-	ConfiguracionAlmacenamiento();
-	virtual ~ConfiguracionAlmacenamiento();
 
-	static std::string path_db;
-	static bool almacenamiento_local;
-	static bool almacenamiento_distribuido;
+    std::string path_db;
+    bool almacenamiento_local;
+    bool almacenamiento_distribuido;
 };
 };
