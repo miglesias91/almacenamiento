@@ -10,8 +10,6 @@
 // almacenamiento
 #include <almacenamiento/include/IAdministradorAlmacenamiento.h>
 
-unsigned long long int handlersucho;
-
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
