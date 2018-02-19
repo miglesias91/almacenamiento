@@ -230,7 +230,7 @@ TEST(almacenamiento, AbrirYBorrarBDLocalCorrectamente)
     admin_local.cerrar();
 
     bool borrado_ok = admin_local.borrar();
-    
+
     ASSERT_EQ(true, borrado_error);
     ASSERT_EQ(true, borrado_ok);
 }

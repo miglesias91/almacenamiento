@@ -25,7 +25,9 @@ int main(int argc, char **argv)
     almacenamiento::IAdministradorAlmacenamiento::getInstancia(handler)->cerrar();
     almacenamiento::IAdministradorAlmacenamiento::getInstancia(handler_2)->cerrar();
 
-    //almacenamiento::IAdministradorAlmacenamiento::liberar(handler);
+    almacenamiento::IAdministradorAlmacenamiento::getInstancia(handler)->borrar();
+    almacenamiento::IAdministradorAlmacenamiento::getInstancia(handler_2)->borrar();
+
     almacenamiento::IAdministradorAlmacenamiento::liberarTodos();
 
     std::getchar();
