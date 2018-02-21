@@ -22,41 +22,40 @@ class RocksDB
         RocksDB();
         virtual ~RocksDB();
 
-		EstadoDB abrir(std::string directorio);
+        EstadoDB abrir(std::string directorio);
 
-		EstadoDB cerrar();
+        EstadoDB cerrar();
 
-        EstadoDB borrar();
+        bool borrar();
 
-		// GETTERS
+        // GETTERS
 
-		// SETTERS
+        // SETTERS
 
-		// METODOS
+        // METODOS
 
-		EstadoDB almacenar(std::string clave, std::string valor);
+        EstadoDB almacenar(std::string clave, std::string valor);
 
-		EstadoDB recuperar(std::string clave, std::string & valor_a_recuperar);
+        EstadoDB recuperar(std::string clave, std::string & valor_a_recuperar);
 
-		EstadoDB recuperarGrupoPrefijo(std::string prefijo, std::vector<std::pair<std::string, std::string>> & valores_a_recuperar);
+        EstadoDB recuperarGrupoPrefijo(std::string prefijo, std::vector<std::pair<std::string, std::string>> & valores_a_recuperar);
 
-		EstadoDB eliminar(std::string clave);
+        EstadoDB eliminar(std::string clave);
 
-		// CONSULTA
+        // CONSULTA
+
+        bool estaAbierta();
 
 	private:
-		// METODOS INTERNOS
+        // METODOS INTERNOS
 
-		// ATRIBUTOS
+        // ATRIBUTOS
 
-		//static rocksdb::DB* db;
-        //static rocksdb::WriteOptions opciones_escritura;
-        //static rocksdb::ReadOptions opciones_lectura;
-        //static std::string directorio;
         rocksdb::DB* db;
         rocksdb::WriteOptions opciones_escritura;
         rocksdb::ReadOptions opciones_lectura;
         std::string directorio;
+        bool abierta;
 
 };
 };

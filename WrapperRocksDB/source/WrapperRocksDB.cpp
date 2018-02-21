@@ -2,29 +2,31 @@
 
 using namespace almacenamiento::WrapperRocksDB;
 
+// stl
+#include <experimental/filesystem>
+
 // rocksdb
 #include <rocksdb/slice_transform.h>
-//
-//rocksdb::DB* RocksDB::db = NULL;
-//rocksdb::WriteOptions RocksDB::opciones_escritura;
-//rocksdb::ReadOptions RocksDB::opciones_lectura;
 
 EstadoDB RocksDB::abrir(std::string directorio)
 {
-	rocksdb::Env* env = rocksdb::Env::Default();
-	env->SetBackgroundThreads(2, rocksdb::Env::LOW);
-	env->SetBackgroundThreads(1, rocksdb::Env::HIGH);
+    rocksdb::Env* env = rocksdb::Env::Default();
+    env->SetBackgroundThreads(2, rocksdb::Env::LOW);
+    env->SetBackgroundThreads(1, rocksdb::Env::HIGH);
 	
-	rocksdb::Options options;
-	options.env = env;
-	options.IncreaseParallelism();
-	options.create_if_missing = true;
-	options.prefix_extractor.reset(rocksdb::NewFixedPrefixTransform(3));
+    rocksdb::Options options;
+    options.env = env;
+    options.IncreaseParallelism();
+    options.create_if_missing = true;
+    options.prefix_extractor.reset(rocksdb::NewFixedPrefixTransform(3));
 
-	rocksdb::Status estado_rocksdb = rocksdb::DB::Open(options, directorio, &db);
+    rocksdb::Status estado_rocksdb = rocksdb::DB::Open(options, directorio, &db);
 
-	EstadoDB estado(estado_rocksdb);
-	return estado;
+    this->abierta = estado_rocksdb.ok();
+    this->directorio = directorio;
+
+    EstadoDB estado(estado_rocksdb);
+    return estado;
 }
 
 EstadoDB RocksDB::cerrar()
@@ -37,13 +39,29 @@ EstadoDB RocksDB::cerrar()
 	delete db;
 	db = NULL;
 
+    this->abierta = false;
+
 	EstadoDB estado(rocksdb::Status::OK());
 	return estado;
 }
 
-EstadoDB RocksDB::borrar()
+bool RocksDB::borrar()
 {
-    return EstadoDB();
+    if (this->estaAbierta())
+    {
+        return false;
+    }
+
+    std::uintmax_t cantidad_de_elementos_eliminados = std::experimental::filesystem::remove_all(this->directorio);
+
+    if (cantidad_de_elementos_eliminados >= 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 // GETTERS
@@ -75,16 +93,17 @@ EstadoDB RocksDB::recuperar(std::string string_clave, std::string & valor_a_recu
 
 EstadoDB RocksDB::recuperarGrupoPrefijo(std::string prefijo, std::vector<std::pair<std::string, std::string>> & valores_a_recuperar)
 {
-	rocksdb::Iterator* it = db->NewIterator(rocksdb::ReadOptions());
-	for (it->Seek(prefijo); it->Valid() && it->key().starts_with(prefijo); it->Next())
-	{
-		std::pair<std::string, std::string> clave_valor = std::make_pair(it->key().ToString(), it->value().ToString());
-		valores_a_recuperar.push_back(clave_valor);
-	}
+    rocksdb::Iterator* it = db->NewIterator(rocksdb::ReadOptions());
 
-	EstadoDB estado(it->status());
-	delete it;
-	return estado;
+    for (it->Seek(prefijo); it->Valid() && it->key().starts_with(prefijo); it->Next())
+    {
+        std::pair<std::string, std::string> clave_valor(it->key().ToString(), it->value().ToString());
+        valores_a_recuperar.push_back(clave_valor);
+    }
+
+    EstadoDB estado(it->status());
+    delete it;
+    return estado;
 }
 
 EstadoDB RocksDB::eliminar(std::string clave)
@@ -98,6 +117,11 @@ EstadoDB RocksDB::eliminar(std::string clave)
 }
 
 // CONSULTA
+
+bool RocksDB::estaAbierta()
+{
+    return this->abierta;
+}
 
 // METODOS INTERNOS
 

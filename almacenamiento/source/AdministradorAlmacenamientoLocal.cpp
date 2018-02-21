@@ -57,21 +57,7 @@ bool AdministradorAlmacenamientoLocal::cerrar()
 
 bool AdministradorAlmacenamientoLocal::borrar()
 {
-    if (bdAbierta())
-    {
-        return false;
-    }
-
-    std::uintmax_t cantidad_de_elementos_eliminados = std::experimental::filesystem::remove_all(this->directorio);
-
-    if (cantidad_de_elementos_eliminados >= 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return rocksdb_instancia.borrar();
 }
 
 bool AdministradorAlmacenamientoLocal::almacenar(IAlmacenableClaveValor* valor_a_almacenar)
