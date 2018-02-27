@@ -83,6 +83,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(repos)googletest\googletest\include;$(repos)rocksdb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)Debug;$(repos)rocksdb\build_x86\Debug;$(repos)googletest\googletest\build_x86\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -97,6 +98,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(repos)googletest\googletest\include;$(repos)rocksdb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug;$(repos)rocksdb\build_x64\Debug;$(repos)googletest\googletest\build_x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
