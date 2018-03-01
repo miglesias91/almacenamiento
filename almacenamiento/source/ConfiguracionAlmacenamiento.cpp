@@ -6,8 +6,10 @@ using namespace almacenamiento;
 #include <fstream>
 #include <sstream>
 
-// rapidjson
-#include <rapidjson/document.h>
+// utiles
+#include <utiles/include/Json.h>
+#include <utiles/include/JsonMalFormado.h>
+#include <utiles/include/ImposibleAbrirArchivo.h>
 
 ConfiguracionAlmacenamiento::ConfiguracionAlmacenamiento(std::string path_archivo_configuracion)
 {
@@ -27,21 +29,36 @@ void ConfiguracionAlmacenamiento::leerConfiguracion(std::string path_archivo_con
 
     if (false == archivo.good())
     {
-        throw - 1;
+        throw herramientas::utiles::excepciones::ImposibleAbrirArchivo(path_archivo_configuracion);
     }
 
     std::ostringstream sstream;
     sstream << archivo.rdbuf();
     const std::string string_config(sstream.str());
 
-    rapidjson::Document config_json;
-    config_json.Parse(string_config.c_str());
+    herramientas::utiles::Json * config_json = NULL;
+    herramientas::utiles::Json * config_almacenamiento_json = NULL;
 
-    rapidjson::Value & config_almacenamiento_json = config_json["almacenamiento"];
+    try
+    {
+        config_json = new herramientas::utiles::Json(string_config);
+        config_almacenamiento_json = config_json->getAtributoValorJson("almacenamiento");
 
-    this->path_db = config_almacenamiento_json[ConfiguracionAlmacenamiento::tagPathDB().c_str()].GetString();
-    this->almacenamiento_local = config_almacenamiento_json[ConfiguracionAlmacenamiento::tagAlmacenamientoLocal().c_str()].GetBool();
-    this->almacenamiento_distribuido = config_almacenamiento_json[ConfiguracionAlmacenamiento::tagAlmacenamientoDistribuido().c_str()].GetBool();
+        this->path_db = config_almacenamiento_json->getAtributoValorString(ConfiguracionAlmacenamiento::tagPathDB());
+        this->almacenamiento_local = config_almacenamiento_json->getAtributoValorBool(ConfiguracionAlmacenamiento::tagAlmacenamientoLocal());
+        this->almacenamiento_distribuido = config_almacenamiento_json->getAtributoValorBool(ConfiguracionAlmacenamiento::tagAlmacenamientoDistribuido());
+        this->archivo_config_log = config_almacenamiento_json->getAtributoValorString(ConfiguracionAlmacenamiento::tagArchivoConfigLog());
+    }
+    catch (herramientas::utiles::excepciones::Excepcion & e)
+    {
+        delete config_almacenamiento_json;
+        delete config_json;
+
+        throw;
+    }
+
+    delete config_almacenamiento_json;
+    delete config_json;
 }
 
 bool ConfiguracionAlmacenamiento::almacenamientoLocal()
@@ -52,6 +69,11 @@ bool ConfiguracionAlmacenamiento::almacenamientoLocal()
 bool ConfiguracionAlmacenamiento::almacenamientoDistribuido()
 {
 	return this->almacenamiento_distribuido;
+}
+
+std::string ConfiguracionAlmacenamiento::archivoConfigLog()
+{
+    return this->archivo_config_log;
 }
 
 std::string ConfiguracionAlmacenamiento::pathDB()
@@ -77,4 +99,9 @@ std::string ConfiguracionAlmacenamiento::tagAlmacenamientoLocal()
 std::string ConfiguracionAlmacenamiento::tagAlmacenamientoDistribuido()
 {
 	return "almacenamiento_distribuido";
+}
+
+std::string ConfiguracionAlmacenamiento::tagArchivoConfigLog()
+{
+    return "log_db";
 }

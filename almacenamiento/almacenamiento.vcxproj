@@ -74,7 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(repos)rocksdb\include\;$(repos)rapidjson\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(repos-git)herramientas_desarrollo\;$(repos)rocksdb\include\;$(repos)rapidjson\include\;$(repos)spdlog\include\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -84,7 +84,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(repos)rocksdb\include\;$(repos)rapidjson\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(repos-git)herramientas_desarrollo\;$(repos)rocksdb\include\;$(repos)rapidjson\include\;$(repos)spdlog\include\</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -97,7 +97,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(repos)rocksdb\include\;$(repos)rapidjson\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(repos-git)herramientas_desarrollo\;$(repos)rocksdb\include\;$(repos)rapidjson\include\;$(repos)spdlog\include\</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -112,7 +112,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(repos)rocksdb\include\;$(repos)rapidjson\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(repos-git)herramientas_desarrollo\;$(repos)rocksdb\include\;$(repos)rapidjson\include\;$(repos)spdlog\include\</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -122,12 +122,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\AdministradorAlmacenamientoLocal.h" />
+    <ClInclude Include="include\AlmacenamientoIniciadoPreviamente.h" />
     <ClInclude Include="include\ConfiguracionAlmacenamiento.h" />
     <ClInclude Include="include\IAdministradorAlmacenamiento.h" />
     <ClInclude Include="include\IAlmacenableClaveValor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AdministradorAlmacenamientoLocal.cpp" />
+    <ClCompile Include="source\AlmacenamientoIniciadoPreviamente.cpp" />
     <ClCompile Include="source\ConfiguracionAlmacenamiento.cpp" />
     <ClCompile Include="source\IAdministradorAlmacenamiento.cpp" />
     <ClCompile Include="source\IAlmacenableClaveValor.cpp" />

@@ -8,11 +8,16 @@ using namespace almacenamiento;
 
 // almacenamiento
 #include <almacenamiento/include/AdministradorAlmacenamientoLocal.h>
+#include <almacenamiento/include/AlmacenamientoIniciadoPreviamente.h>
+
+// utiles
+#include <utiles/include/Excepcion.h>
 
 std::unordered_map<unsigned long long int, IAdministradorAlmacenamiento*> IAdministradorAlmacenamiento::mapa_administradores;
 
-IAdministradorAlmacenamiento::IAdministradorAlmacenamiento(ConfiguracionAlmacenamiento * configuracion) : configuracion(configuracion)
+IAdministradorAlmacenamiento::IAdministradorAlmacenamiento(ConfiguracionAlmacenamiento * configuracion) : configuracion(configuracion), log(NULL)
 {
+    this->log = herramientas::log::AdministradorLog::iniciarNuevo(configuracion->archivoConfigLog());
 }
 
 IAdministradorAlmacenamiento::~IAdministradorAlmacenamiento()
@@ -22,11 +27,21 @@ IAdministradorAlmacenamiento::~IAdministradorAlmacenamiento()
         delete this->configuracion;
         this->configuracion = NULL;
     }
+
+    herramientas::log::AdministradorLog::liberarTodo();
 }
 
 unsigned long long int IAdministradorAlmacenamiento::iniciarNuevo(std::string path_configuracion)
 {
-    ConfiguracionAlmacenamiento * config = new ConfiguracionAlmacenamiento(path_configuracion);
+    ConfiguracionAlmacenamiento * config = NULL;
+    try
+    {
+        config = new ConfiguracionAlmacenamiento(path_configuracion);
+    }
+    catch (herramientas::utiles::excepciones::Excepcion & e)
+    {
+        throw;
+    }
 
     std::hash<std::string> hasheador;
 
@@ -34,13 +49,9 @@ unsigned long long int IAdministradorAlmacenamiento::iniciarNuevo(std::string pa
 
     if (administradorIniciado(handler_admin))
 	{
-		// TODO agregar log.
-        std::cout << "Administrador de almacenamiento en el path " + config->pathDB() + " ya fue iniciado." << std::endl;
-
         delete config;
 
-		return 0;
-		// throw std::exception("Administrador ya fue iniciado.");
+        throw excepciones::AlmacenamientoIniciadoPreviamente(config->pathDB());
 	}
 
 	if (config->almacenamientoLocal())

@@ -7,6 +7,9 @@
 #include <vector>
 #include <unordered_map>
 
+// log
+#include <log/include/AdministradorLog.h>
+
 // almacenamiento
 #include <almacenamiento/include/ConfiguracionAlmacenamiento.h>
 #include <almacenamiento/include/IAlmacenableClaveValor.h>
@@ -38,6 +41,8 @@ namespace almacenamiento
         static IAdministradorAlmacenamiento* getInstancia(unsigned long long int handler);
 
         static IAdministradorAlmacenamiento* getInstancia(std::string path_db);
+
+        herramientas::log::Logger * log;
 
         // SETTERS
 

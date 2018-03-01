@@ -11,6 +11,8 @@ using namespace almacenamiento;
 AdministradorAlmacenamientoLocal::AdministradorAlmacenamientoLocal(ConfiguracionAlmacenamiento * configuracion) : IAdministradorAlmacenamiento(configuracion)
 {
     this->directorio = configuracion->pathDB();
+
+    this->log->info("nuevo AdministradorAlmacenamientoLocal creado. ubicacion = '" + configuracion->pathDB() +"'.");
 }
 
 AdministradorAlmacenamientoLocal::~AdministradorAlmacenamientoLocal()

@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de código fuente\excepciones">
+      <UniqueIdentifier>{02afb67e-eb6e-401f-81f8-3f2c3728f8be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\excepciones">
+      <UniqueIdentifier>{849be19c-d19d-447c-98e6-0181fb46e07e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\IAlmacenableClaveValor.h">
@@ -27,6 +33,9 @@
     <ClInclude Include="include\ConfiguracionAlmacenamiento.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="include\AlmacenamientoIniciadoPreviamente.h">
+      <Filter>Archivos de encabezado\excepciones</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\IAlmacenableClaveValor.cpp">
@@ -40,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="source\IAdministradorAlmacenamiento.cpp">
       <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AlmacenamientoIniciadoPreviamente.cpp">
+      <Filter>Archivos de código fuente\excepciones</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
