@@ -9,7 +9,8 @@
     	"patron" : "",
     	"salidas" :
     	[
-    		"log_almacenamiento_testing.txt"
+    		"log_global_almacenamiento_testing.txt",
+            "log_almacenamiento_testing.txt"
     	]
     }
 }

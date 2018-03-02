@@ -5,18 +5,21 @@
 
 // almacenamiento
 #include <almacenamiento/include/ConfiguracionAlmacenamiento.h>
+#include <almacenamiento/include/ImposibleAbrirAlmacenamiento.h>
+#include <almacenamiento/include/ImposibleCerrarAlmacenamiento.h>
 
 using namespace almacenamiento;
 
 AdministradorAlmacenamientoLocal::AdministradorAlmacenamientoLocal(ConfiguracionAlmacenamiento * configuracion) : IAdministradorAlmacenamiento(configuracion)
 {
-    this->directorio = configuracion->pathDB();
+    this->directorio = this->configuracion->pathDB();
 
-    this->log->info("nuevo AdministradorAlmacenamientoLocal creado. ubicacion = '" + configuracion->pathDB() +"'.");
+    this->log->info("nuevo almacenamiento local: '" + this->configuracion->pathDB() +"'.");
 }
 
 AdministradorAlmacenamientoLocal::~AdministradorAlmacenamientoLocal()
 {
+    this->log->info("liberando almacenamiento local: '" + this->configuracion->pathDB() + "'.");
 }
 
 // GETTERS
@@ -27,15 +30,20 @@ AdministradorAlmacenamientoLocal::~AdministradorAlmacenamientoLocal()
 
 bool AdministradorAlmacenamientoLocal::abrir()
 {
+    this->log->info("abriendo db '" + this->configuracion->pathDB() + "'.");
+
     WrapperRocksDB::EstadoDB estado = rocksdb_instancia.abrir(this->directorio);
 
     if (estado.ok())
     {
+        this->log->info("db '" + this->configuracion->pathDB() + "' abierta OK.");
         abierto = true;
     }
     else
     {
+        this->log->error("no se pudo abrir la db '" + this->configuracion->pathDB() + "'.");
         abierto = false;
+        throw excepciones::ImposibleAbrirAlmacenamiento(this->configuracion->pathDB());
     }
 
     return estado.ok();
@@ -43,15 +51,20 @@ bool AdministradorAlmacenamientoLocal::abrir()
 
 bool AdministradorAlmacenamientoLocal::cerrar()
 {
+    this->log->info("cerrando db '" + this->configuracion->pathDB() + "'.");
+
     WrapperRocksDB::EstadoDB estado = rocksdb_instancia.cerrar();
 
     if (estado.ok())
     {
+        this->log->info("db '" + this->configuracion->pathDB() + "' cerrada OK.");
         abierto = false;
     }
     else
     {
+        this->log->error("no se pudo cerrar la db '" + this->configuracion->pathDB() + "'.");
         abierto = true;
+        throw excepciones::ImposibleCerrarAlmacenamiento(this->configuracion->pathDB());
     }
 
     return estado.ok();
@@ -59,11 +72,15 @@ bool AdministradorAlmacenamientoLocal::cerrar()
 
 bool AdministradorAlmacenamientoLocal::borrar()
 {
+    this->log->info("borrando db '" + this->configuracion->pathDB() + "'.");
+
     return rocksdb_instancia.borrar();
 }
 
 bool AdministradorAlmacenamientoLocal::almacenar(IAlmacenableClaveValor* valor_a_almacenar)
 {
+    this->log->debug("almacenar{ grupo: '" + valor_a_almacenar->getGrupo() + "' - clave: '" + valor_a_almacenar->getClaveConPrefijo()  +"' - valor: '" + valor_a_almacenar->getValor() + "' }");
+
     WrapperRocksDB::EstadoDB estado = rocksdb_instancia.almacenar(valor_a_almacenar->getClaveConPrefijo(), valor_a_almacenar->getValor());
 
 	return estado.ok();
@@ -76,6 +93,8 @@ bool AdministradorAlmacenamientoLocal::recuperar(IAlmacenableClaveValor* clave_v
     WrapperRocksDB::EstadoDB estado = rocksdb_instancia.recuperar(clave_valor_recuperado->getClaveConPrefijo(), valor_recuperado);
 
 	clave_valor_recuperado->setValor(valor_recuperado);
+
+    this->log->debug("recuperar{ grupo: '" + clave_valor_recuperado->getGrupo() + "' - clave: '" + clave_valor_recuperado->getClaveConPrefijo() + "' - valor recuperado: '" + clave_valor_recuperado->getValor() + "' }");
 
 	return estado.ok();
 }
@@ -92,6 +111,8 @@ bool AdministradorAlmacenamientoLocal::recuperar(std::vector<IAlmacenableClaveVa
         estado = rocksdb_instancia.recuperar(clave_valor_recuperado->getClaveConPrefijo(), valor_recuperado);
 
 		clave_valor_recuperado->setValor(valor_recuperado);
+
+        this->log->debug("recuperar_vector{ grupo: '" + clave_valor_recuperado->getGrupo() + "' - clave: '" + clave_valor_recuperado->getClaveConPrefijo() + "' - valor recuperado: '" + clave_valor_recuperado->getValor() + "' }");
 
 		if (false == estado.ok())
 		{
@@ -113,6 +134,7 @@ bool AdministradorAlmacenamientoLocal::recuperarGrupo(std::string prefijo_grupo,
 		return estado.ok();
 	}
 
+    std::string lista_recuperados = "";
 	for (std::vector<std::pair<std::string, std::string>>::iterator it = claves_valores_recuperados.begin(); it != claves_valores_recuperados.end(); it++)
 	{
 		std::string clave = (*it).first;
@@ -120,13 +142,19 @@ bool AdministradorAlmacenamientoLocal::recuperarGrupo(std::string prefijo_grupo,
 
 		std::string valor = (*it).second;
 		valores_recuperados.push_back(new IAlmacenableClaveValor(clave, prefijo_grupo, valor));
+
+        lista_recuperados = "grupo: '" + prefijo_grupo + "' - clave: '" + prefijo_grupo + clave + "' - valor  recuperado: '" + valor + "'\n";
 	}
+
+    this->log->debug("recuperarGrupo{\n" + lista_recuperados + "}");
 
 	return estado.ok();
 }
 
 bool AdministradorAlmacenamientoLocal::modificar(IAlmacenableClaveValor* nuevo_valor)
 {
+    this->log->debug("modificar{ grupo: '" + nuevo_valor->getGrupo() + "' - clave: '" + nuevo_valor->getClaveConPrefijo() + "' - valor: '" + nuevo_valor->getValor() + "' }");
+
     WrapperRocksDB::EstadoDB estado = rocksdb_instancia.almacenar(nuevo_valor->getClaveConPrefijo(), nuevo_valor->getValor());
 
 	return estado.ok();
@@ -134,6 +162,8 @@ bool AdministradorAlmacenamientoLocal::modificar(IAlmacenableClaveValor* nuevo_v
 
 bool AdministradorAlmacenamientoLocal::eliminar(IAlmacenableClaveValor* clave_a_eliminar)
 {
+    this->log->debug("eliminar{ grupo: '" + clave_a_eliminar->getGrupo() + "' - clave: '" + clave_a_eliminar->getClaveConPrefijo() + "' }");
+
     WrapperRocksDB::EstadoDB estado = rocksdb_instancia.eliminar(clave_a_eliminar->getClaveConPrefijo());
 	
 	return estado.ok();
@@ -149,9 +179,12 @@ bool AdministradorAlmacenamientoLocal::existe(IAlmacenableClaveValor* clave_a_ch
 
 	if (valor_recuperado.empty())
 	{
-		return false;
+        this->log->debug("existe{ grupo: '" + clave_a_chequear->getGrupo() + "' - clave: '" + clave_a_chequear->getClaveConPrefijo() + "' - existe: false }");
+        return false;
 	}
-	return true;
+
+    this->log->debug("existe{ grupo: '" + clave_a_chequear->getGrupo() + "' - clave: '" + clave_a_chequear->getClaveConPrefijo() + "' - existe: true }");
+    return true;
 }
 
 bool AdministradorAlmacenamientoLocal::bdAbierta()

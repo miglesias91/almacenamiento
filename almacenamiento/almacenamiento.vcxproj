@@ -122,17 +122,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\AdministradorAlmacenamientoLocal.h" />
+    <ClInclude Include="include\AlmacenamientoNoInicializado.h" />
     <ClInclude Include="include\AlmacenamientoIniciadoPreviamente.h" />
     <ClInclude Include="include\ConfiguracionAlmacenamiento.h" />
     <ClInclude Include="include\IAdministradorAlmacenamiento.h" />
     <ClInclude Include="include\IAlmacenableClaveValor.h" />
+    <ClInclude Include="include\ImposibleAbrirAlmacenamiento.h" />
+    <ClInclude Include="include\ImposibleCerrarAlmacenamiento.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AdministradorAlmacenamientoLocal.cpp" />
+    <ClCompile Include="source\AlmacenamientoNoInicializado.cpp" />
     <ClCompile Include="source\AlmacenamientoIniciadoPreviamente.cpp" />
     <ClCompile Include="source\ConfiguracionAlmacenamiento.cpp" />
     <ClCompile Include="source\IAdministradorAlmacenamiento.cpp" />
     <ClCompile Include="source\IAlmacenableClaveValor.cpp" />
+    <ClCompile Include="source\ImposibleAbrirAlmacenamiento.cpp" />
+    <ClCompile Include="source\ImposibleCerrarAlmacenamiento.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,7 +8,6 @@ using namespace almacenamiento;
 
 // utiles
 #include <utiles/include/Json.h>
-#include <utiles/include/JsonMalFormado.h>
 #include <utiles/include/ImposibleAbrirArchivo.h>
 
 ConfiguracionAlmacenamiento::ConfiguracionAlmacenamiento(std::string path_archivo_configuracion)

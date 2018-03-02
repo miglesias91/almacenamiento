@@ -9,6 +9,7 @@ using namespace almacenamiento;
 // almacenamiento
 #include <almacenamiento/include/AdministradorAlmacenamientoLocal.h>
 #include <almacenamiento/include/AlmacenamientoIniciadoPreviamente.h>
+#include <almacenamiento/include/AlmacenamientoNoInicializado.h>
 
 // utiles
 #include <utiles/include/Excepcion.h>
@@ -28,7 +29,7 @@ IAdministradorAlmacenamiento::~IAdministradorAlmacenamiento()
         this->configuracion = NULL;
     }
 
-    herramientas::log::AdministradorLog::liberarTodo();
+    herramientas::log::AdministradorLog::liberarLogger(this->log->getNombre());
 }
 
 unsigned long long int IAdministradorAlmacenamiento::iniciarNuevo(std::string path_configuracion)
@@ -74,6 +75,8 @@ void IAdministradorAlmacenamiento::liberarTodos()
     }
 
     mapa_administradores.clear();
+
+    herramientas::log::AdministradorLog::liberarTodo();
 }
 
 void IAdministradorAlmacenamiento::liberar(unsigned long long int handler)
@@ -112,7 +115,7 @@ IAdministradorAlmacenamiento* IAdministradorAlmacenamiento::getInstancia(unsigne
 	}
 	else
 	{
-		throw std::exception("Administrador de almacenamiento no inicializado.");
+        throw excepciones::AlmacenamientoNoInicializado(handler);
 	}
 }
 
@@ -122,5 +125,15 @@ IAdministradorAlmacenamiento * IAdministradorAlmacenamiento::getInstancia(std::s
 
     unsigned long long int handler = hasheador(path_db);
 
-    return getInstancia(handler);
+    IAdministradorAlmacenamiento * admin = NULL;
+    try
+    {
+        admin = getInstancia(handler);
+    }
+    catch (herramientas::utiles::excepciones::Excepcion & e)
+    {
+        throw excepciones::AlmacenamientoNoInicializado(path_db);
+    }
+
+    return admin;
 }

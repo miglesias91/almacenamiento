@@ -1,2 +1,0 @@
-[2018-03-01 15:28:43.272] [almacenamiento-testing] [info] nuevo AdministradorAlmacenamientoLocal creado. ubicacion = 'C:/temp/db_almacenamiento--testing--debug'.
-[2018-03-01 15:28:43.283] [almacenamiento-testing-2] [info] nuevo AdministradorAlmacenamientoLocal creado. ubicacion = 'C:/temp/db_almacenamiento_2--testing--debug'.
