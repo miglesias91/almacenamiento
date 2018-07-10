@@ -5,6 +5,7 @@
 
 // rocksdb
 #include <rocksdb/db.h>
+#include <rocksdb/utilities/checkpoint.h>
 
 // WrapperRocksDB
 #include <WrapperRocksDB/include/EstadoDB.h>
@@ -34,6 +35,8 @@ class RocksDB
 
         // METODOS
 
+        EstadoDB checkpoint(const std::string & path);
+
         EstadoDB almacenar(std::string clave, std::string valor);
 
         EstadoDB recuperar(std::string clave, std::string & valor_a_recuperar);
@@ -52,6 +55,7 @@ class RocksDB
         // ATRIBUTOS
 
         rocksdb::DB* db;
+        rocksdb::Checkpoint * checkpoint_db;
         rocksdb::WriteOptions opciones_escritura;
         rocksdb::ReadOptions opciones_lectura;
         std::string directorio;

@@ -1,3 +1,7 @@
+
+// stl
+#include <experimental/filesystem>
+
 // gtest
 #include <gtest/gtest.h>
 
@@ -127,8 +131,15 @@ TEST(WrapperRocksDB, RecuperarPorPrefijo)
 	ASSERT_STREQ("hola!!!", claves_valores_recuperadas[3].second.c_str());
 }
 
+TEST(WrapperRocksDB, checkpoint) {
+    bool creado = rocksdb_instancia.checkpoint("C:/temp/db_almacenamiento--testing--test_WrapperRocksDB--debug_checkpoint").ok();
+    bool no_creado = rocksdb_instancia.checkpoint("C:/temp/db_almacenamiento--testing--test_WrapperRocksDB--debug_checkpoint").ok();
+    ASSERT_EQ(true, creado);
+    ASSERT_EQ(false, no_creado);
+}
 TEST(WrapperRocksDB, cierro_bd)
 {
     rocksdb_instancia.cerrar();
     rocksdb_instancia.borrar();
+    std::uintmax_t cantidad_de_elementos_eliminados = std::experimental::filesystem::remove_all("C:/temp/db_almacenamiento--testing--test_WrapperRocksDB--debug_checkpoint");
 }

@@ -44,6 +44,8 @@ namespace almacenamiento
 
         herramientas::log::Logger * log;
 
+        virtual ConfiguracionAlmacenamiento * config();
+
         // SETTERS
 
         // METODOS
@@ -53,6 +55,8 @@ namespace almacenamiento
         virtual bool cerrar() = 0;
 
         virtual bool borrar() = 0;
+
+        virtual bool checkpoint(const std::string & path) = 0;
 
 		virtual bool almacenar(IAlmacenableClaveValor* valor_a_almacenar) = 0;
 

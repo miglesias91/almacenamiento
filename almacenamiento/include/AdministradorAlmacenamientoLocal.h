@@ -31,6 +31,8 @@ class AdministradorAlmacenamientoLocal : public IAdministradorAlmacenamiento
 
         virtual bool borrar();
 
+        virtual bool checkpoint(const std::string & path);
+
 		virtual bool almacenar(IAlmacenableClaveValor* valor_a_almacenar);
 
 		virtual bool recuperar(IAlmacenableClaveValor* valor_recuperado);

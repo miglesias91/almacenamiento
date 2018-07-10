@@ -20,10 +20,13 @@ EstadoDB RocksDB::abrir(std::string directorio)
     options.create_if_missing = true;
     options.prefix_extractor.reset(rocksdb::NewFixedPrefixTransform(3));
 
-    rocksdb::Status estado_rocksdb = rocksdb::DB::Open(options, directorio, &db);
-
+    rocksdb::Status estado_rocksdb = rocksdb::DB::Open(options, directorio, &this->db);
     this->abierta = estado_rocksdb.ok();
     this->directorio = directorio;
+
+    if(estado_rocksdb.ok()) {
+        rocksdb::Checkpoint::Create(this->db, &this->checkpoint_db);
+    }
 
     EstadoDB estado(estado_rocksdb);
     return estado;
@@ -31,18 +34,22 @@ EstadoDB RocksDB::abrir(std::string directorio)
 
 EstadoDB RocksDB::cerrar()
 {
-	if (NULL == db)
-	{
-		return rocksdb::Status::Corruption("No se creo ninguna instancia de la bd.");
-	}
+    if (nullptr == db) {
+        return rocksdb::Status::Corruption("No se creo ninguna instancia de la bd.");
+    }
 
-	delete db;
-	db = NULL;
+    delete db;
+    db = nullptr;
 
     this->abierta = false;
 
-	EstadoDB estado(rocksdb::Status::OK());
-	return estado;
+    if (nullptr != checkpoint_db) { 
+        delete checkpoint_db;
+        checkpoint_db = nullptr;
+    }
+
+    EstadoDB estado(rocksdb::Status::OK());
+    return estado;
 }
 
 bool RocksDB::borrar()
@@ -69,6 +76,12 @@ bool RocksDB::borrar()
 // SETTERS
 
 // METODOS
+
+EstadoDB RocksDB::checkpoint(const std::string & path) {
+    rocksdb::Status estado_rocksdb = this->checkpoint_db->CreateCheckpoint(path);
+    EstadoDB estado(estado_rocksdb);
+    return estado;
+}
 
 EstadoDB RocksDB::almacenar(std::string clave, std::string valor)
 {
@@ -125,7 +138,7 @@ bool RocksDB::estaAbierta()
 
 // METODOS INTERNOS
 
-RocksDB::RocksDB() : db(NULL)
+RocksDB::RocksDB() : db(nullptr), checkpoint_db(nullptr)
 {
 }
 

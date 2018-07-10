@@ -16,17 +16,17 @@ using namespace almacenamiento;
 
 std::unordered_map<unsigned long long int, IAdministradorAlmacenamiento*> IAdministradorAlmacenamiento::mapa_administradores;
 
-IAdministradorAlmacenamiento::IAdministradorAlmacenamiento(ConfiguracionAlmacenamiento * configuracion) : configuracion(configuracion), log(NULL)
+IAdministradorAlmacenamiento::IAdministradorAlmacenamiento(ConfiguracionAlmacenamiento * configuracion) : configuracion(configuracion), log(nullptr)
 {
     this->log = herramientas::log::AdministradorLog::iniciarNuevo(configuracion->archivoConfigLog());
 }
 
 IAdministradorAlmacenamiento::~IAdministradorAlmacenamiento()
 {
-    if (NULL != this->configuracion)
+    if (nullptr != this->configuracion)
     {
         delete this->configuracion;
-        this->configuracion = NULL;
+        this->configuracion = nullptr;
     }
 
     herramientas::log::AdministradorLog::liberarLogger(this->log->getNombre());
@@ -34,7 +34,7 @@ IAdministradorAlmacenamiento::~IAdministradorAlmacenamiento()
 
 unsigned long long int IAdministradorAlmacenamiento::iniciarNuevo(std::string path_configuracion)
 {
-    ConfiguracionAlmacenamiento * config = NULL;
+    ConfiguracionAlmacenamiento * config = nullptr;
     try
     {
         config = new ConfiguracionAlmacenamiento(path_configuracion);
@@ -125,7 +125,7 @@ IAdministradorAlmacenamiento * IAdministradorAlmacenamiento::getInstancia(std::s
 
     unsigned long long int handler = hasheador(path_db);
 
-    IAdministradorAlmacenamiento * admin = NULL;
+    IAdministradorAlmacenamiento * admin = nullptr;
     try
     {
         admin = getInstancia(handler);
@@ -136,4 +136,8 @@ IAdministradorAlmacenamiento * IAdministradorAlmacenamiento::getInstancia(std::s
     }
 
     return admin;
+}
+
+ConfiguracionAlmacenamiento * IAdministradorAlmacenamiento::config() {
+    return this->configuracion;
 }

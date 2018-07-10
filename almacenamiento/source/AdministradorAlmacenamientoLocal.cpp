@@ -3,6 +3,9 @@
 // stl
 #include <experimental/filesystem>
 
+// utiles
+#include <utiles/include/FuncionesSistemaArchivos.h>
+
 // almacenamiento
 #include <almacenamiento/include/ConfiguracionAlmacenamiento.h>
 #include <almacenamiento/include/ImposibleAbrirAlmacenamiento.h>
@@ -75,6 +78,19 @@ bool AdministradorAlmacenamientoLocal::borrar()
     this->log->info("borrando db '" + this->configuracion->pathDB() + "'.");
 
     return rocksdb_instancia.borrar();
+}
+
+bool AdministradorAlmacenamientoLocal::checkpoint(const std::string & path) {
+
+    if (true == std::experimental::filesystem::exists(path)) {
+        return false;
+    }
+
+    this->log->debug("checkpoint{ path: '" + path + "' }");
+
+    WrapperRocksDB::EstadoDB estado = rocksdb_instancia.checkpoint(path);
+
+    return estado.ok();
 }
 
 bool AdministradorAlmacenamientoLocal::almacenar(IAlmacenableClaveValor* valor_a_almacenar)
