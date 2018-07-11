@@ -97,6 +97,10 @@ bool AdministradorAlmacenamientoLocal::almacenar(IAlmacenableClaveValor* valor_a
 {
     this->log->debug("almacenar{ grupo: '" + valor_a_almacenar->getGrupo() + "' - clave: '" + valor_a_almacenar->getClaveConPrefijo()  +"' - valor: '" + valor_a_almacenar->getValor() + "' }");
 
+    if (this->existe(valor_a_almacenar)) {
+        return false;
+    }
+
     WrapperRocksDB::EstadoDB estado = rocksdb_instancia.almacenar(valor_a_almacenar->getClaveConPrefijo(), valor_a_almacenar->getValor());
 
 	return estado.ok();
