@@ -24,7 +24,7 @@ public:
 
     bool almacenamientoLocal();
     bool almacenamientoDistribuido();
-
+    bool soloLectura();
     std::string archivoConfigLog();
 
     // TAGS
@@ -32,6 +32,7 @@ public:
     std::string tagPathDB();
     std::string tagAlmacenamientoLocal();
     std::string tagAlmacenamientoDistribuido();
+    std::string tagSoloLectura();
     std::string tagArchivoConfigLog();
 
 private:
@@ -39,6 +40,7 @@ private:
     std::string path_db;
     bool almacenamiento_local;
     bool almacenamiento_distribuido;
+    bool solo_lectura;
     std::string archivo_config_log;
 };
 };

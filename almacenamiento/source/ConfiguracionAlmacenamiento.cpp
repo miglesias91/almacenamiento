@@ -46,6 +46,7 @@ void ConfiguracionAlmacenamiento::leerConfiguracion(std::string path_archivo_con
         this->path_db = config_almacenamiento_json->getAtributoValorString(ConfiguracionAlmacenamiento::tagPathDB());
         this->almacenamiento_local = config_almacenamiento_json->getAtributoValorBool(ConfiguracionAlmacenamiento::tagAlmacenamientoLocal());
         this->almacenamiento_distribuido = config_almacenamiento_json->getAtributoValorBool(ConfiguracionAlmacenamiento::tagAlmacenamientoDistribuido());
+        this->solo_lectura = config_almacenamiento_json->getAtributoValorBool(ConfiguracionAlmacenamiento::tagSoloLectura());
         this->archivo_config_log = config_almacenamiento_json->getAtributoValorString(ConfiguracionAlmacenamiento::tagArchivoConfigLog());
     }
     catch (herramientas::utiles::excepciones::Excepcion & e)
@@ -68,6 +69,10 @@ bool ConfiguracionAlmacenamiento::almacenamientoLocal()
 bool ConfiguracionAlmacenamiento::almacenamientoDistribuido()
 {
 	return this->almacenamiento_distribuido;
+}
+
+bool ConfiguracionAlmacenamiento::soloLectura() {
+    return this->solo_lectura;
 }
 
 std::string ConfiguracionAlmacenamiento::archivoConfigLog()
@@ -98,6 +103,10 @@ std::string ConfiguracionAlmacenamiento::tagAlmacenamientoLocal()
 std::string ConfiguracionAlmacenamiento::tagAlmacenamientoDistribuido()
 {
 	return "almacenamiento_distribuido";
+}
+
+std::string ConfiguracionAlmacenamiento::tagSoloLectura() {
+    return "solo_lectura";
 }
 
 std::string ConfiguracionAlmacenamiento::tagArchivoConfigLog()

@@ -23,7 +23,7 @@ class RocksDB
         RocksDB();
         virtual ~RocksDB();
 
-        EstadoDB abrir(std::string directorio);
+        EstadoDB abrir(const std::string & directorio, bool solo_lectura = false);
 
         EstadoDB cerrar();
 

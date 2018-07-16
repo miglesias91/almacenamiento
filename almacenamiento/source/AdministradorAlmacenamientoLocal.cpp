@@ -35,7 +35,8 @@ bool AdministradorAlmacenamientoLocal::abrir()
 {
     this->log->info("abriendo db '" + this->configuracion->pathDB() + "'.");
 
-    WrapperRocksDB::EstadoDB estado = rocksdb_instancia.abrir(this->directorio);
+    bool solo_lectura = this->configuracion->soloLectura();
+    WrapperRocksDB::EstadoDB estado = rocksdb_instancia.abrir(this->directorio, solo_lectura);
 
     if (estado.ok())
     {

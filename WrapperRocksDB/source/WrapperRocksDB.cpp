@@ -8,7 +8,7 @@ using namespace almacenamiento::WrapperRocksDB;
 // rocksdb
 #include <rocksdb/slice_transform.h>
 
-EstadoDB RocksDB::abrir(std::string directorio)
+EstadoDB RocksDB::abrir(const std::string & directorio, bool solo_lectura)
 {
     rocksdb::Env* env = rocksdb::Env::Default();
     env->SetBackgroundThreads(2, rocksdb::Env::LOW);
@@ -20,7 +20,12 @@ EstadoDB RocksDB::abrir(std::string directorio)
     options.create_if_missing = true;
     options.prefix_extractor.reset(rocksdb::NewFixedPrefixTransform(3));
 
-    rocksdb::Status estado_rocksdb = rocksdb::DB::Open(options, directorio, &this->db);
+    rocksdb::Status estado_rocksdb;
+    if (solo_lectura) {
+        estado_rocksdb = rocksdb::DB::OpenForReadOnly(options, directorio, &this->db);
+    } else {
+        estado_rocksdb = rocksdb::DB::Open(options, directorio, &this->db);
+    }
     this->abierta = estado_rocksdb.ok();
     this->directorio = directorio;
 
