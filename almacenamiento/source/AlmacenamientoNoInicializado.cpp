@@ -2,7 +2,7 @@
 
 using namespace almacenamiento::excepciones;
 
-AlmacenamientoNoInicializado::AlmacenamientoNoInicializado(unsigned long long int handler) : Excepcion("almacenamiento{ handler = '" + std::to_string(handler) + "'}: no inicializado.")
+AlmacenamientoNoInicializado::AlmacenamientoNoInicializado(uintmax_t handler) : Excepcion("almacenamiento{ handler = '" + std::to_string(handler) + "'}: no inicializado.")
 {
 }
 

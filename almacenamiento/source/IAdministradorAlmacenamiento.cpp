@@ -14,7 +14,7 @@ using namespace almacenamiento;
 // utiles
 #include <utiles/include/Excepcion.h>
 
-std::unordered_map<unsigned long long int, IAdministradorAlmacenamiento*> IAdministradorAlmacenamiento::mapa_administradores;
+std::unordered_map<uintmax_t, IAdministradorAlmacenamiento*> IAdministradorAlmacenamiento::mapa_administradores;
 
 IAdministradorAlmacenamiento::IAdministradorAlmacenamiento(ConfiguracionAlmacenamiento * configuracion) : configuracion(configuracion), log(nullptr)
 {
@@ -32,7 +32,39 @@ IAdministradorAlmacenamiento::~IAdministradorAlmacenamiento()
     herramientas::log::AdministradorLog::liberarLogger(this->log->getNombre());
 }
 
-unsigned long long int IAdministradorAlmacenamiento::iniciarNuevo(std::string path_configuracion)
+uintmax_t almacenamiento::IAdministradorAlmacenamiento::iniciarNuevo(const ConfiguracionAlmacenamiento & configuracion)
+{
+    ConfiguracionAlmacenamiento * config = new ConfiguracionAlmacenamiento();
+    config->pathDB(configuracion.pathDB());
+    config->almacenamientoLocal(configuracion.almacenamientoLocal());
+    config->almacenamientoDistribuido(configuracion.almacenamientoDistribuido());
+    config->soloLectura(configuracion.soloLectura());
+    config->archivoConfigLog(configuracion.archivoConfigLog());
+
+    std::hash<std::string> hasheador;
+
+    uintmax_t handler_admin = hasheador(config->pathDB());
+
+    if (administradorIniciado(handler_admin))
+    {
+        delete config;
+
+        throw excepciones::AlmacenamientoIniciadoPreviamente(config->pathDB());
+    }
+
+    if (config->almacenamientoLocal())
+    {
+        crearAdministradorAlmacenamientoLocal(handler_admin, config);
+    }
+    else
+    {
+        crearAdministradorAlmacenamientoDistribuido(handler_admin, config);
+    }
+
+    return handler_admin;
+}
+
+uintmax_t IAdministradorAlmacenamiento::iniciarNuevo(const std::string & path_configuracion)
 {
     ConfiguracionAlmacenamiento * config = nullptr;
     try
@@ -46,7 +78,7 @@ unsigned long long int IAdministradorAlmacenamiento::iniciarNuevo(std::string pa
 
     std::hash<std::string> hasheador;
 
-    unsigned long long int handler_admin = hasheador(config->pathDB());
+    uintmax_t handler_admin = hasheador(config->pathDB());
 
     if (administradorIniciado(handler_admin))
 	{
@@ -69,7 +101,7 @@ unsigned long long int IAdministradorAlmacenamiento::iniciarNuevo(std::string pa
 
 void IAdministradorAlmacenamiento::liberarTodos()
 {
-    for (std::unordered_map<unsigned long long int, IAdministradorAlmacenamiento*>::iterator it = mapa_administradores.begin(); it != mapa_administradores.end(); it++)
+    for (std::unordered_map<uintmax_t, IAdministradorAlmacenamiento*>::iterator it = mapa_administradores.begin(); it != mapa_administradores.end(); it++)
     {
         delete it->second;
     }
@@ -79,7 +111,7 @@ void IAdministradorAlmacenamiento::liberarTodos()
     herramientas::log::AdministradorLog::liberarTodo();
 }
 
-void IAdministradorAlmacenamiento::liberar(unsigned long long int handler)
+void IAdministradorAlmacenamiento::liberar(uintmax_t handler)
 {
 	if (true == administradorIniciado(handler))
 	{
@@ -88,26 +120,26 @@ void IAdministradorAlmacenamiento::liberar(unsigned long long int handler)
 	}
 }
 
-void IAdministradorAlmacenamiento::crearAdministradorAlmacenamientoLocal(unsigned long long int handler, ConfiguracionAlmacenamiento * configuracion)
+void IAdministradorAlmacenamiento::crearAdministradorAlmacenamientoLocal(uintmax_t handler, ConfiguracionAlmacenamiento * configuracion)
 {
     IAdministradorAlmacenamiento * administrador = new AdministradorAlmacenamientoLocal(configuracion);
 
     mapa_administradores[handler] = administrador;
 }
 
-void IAdministradorAlmacenamiento::crearAdministradorAlmacenamientoDistribuido(unsigned long long int handler, ConfiguracionAlmacenamiento * configuracion) {};
+void IAdministradorAlmacenamiento::crearAdministradorAlmacenamientoDistribuido(uintmax_t handler, ConfiguracionAlmacenamiento * configuracion) {};
 
 
-bool IAdministradorAlmacenamiento::administradorIniciado(unsigned long long int handler)
+bool IAdministradorAlmacenamiento::administradorIniciado(uintmax_t handler)
 {
-    std::unordered_map<unsigned long long int, IAdministradorAlmacenamiento*>::iterator it = mapa_administradores.find(handler);
+    std::unordered_map<uintmax_t, IAdministradorAlmacenamiento*>::iterator it = mapa_administradores.find(handler);
 
     return it != mapa_administradores.end();
 }
 
 // GETTERS
 
-IAdministradorAlmacenamiento* IAdministradorAlmacenamiento::getInstancia(unsigned long long int handler)
+IAdministradorAlmacenamiento* IAdministradorAlmacenamiento::getInstancia(uintmax_t handler)
 {
 	if (administradorIniciado(handler))
 	{
@@ -123,7 +155,7 @@ IAdministradorAlmacenamiento * IAdministradorAlmacenamiento::getInstancia(std::s
 {
     std::hash<std::string> hasheador;
 
-    unsigned long long int handler = hasheador(path_db);
+    uintmax_t handler = hasheador(path_db);
 
     IAdministradorAlmacenamiento * admin = nullptr;
     try

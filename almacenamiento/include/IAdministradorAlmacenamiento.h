@@ -24,21 +24,22 @@ namespace almacenamiento
         IAdministradorAlmacenamiento(ConfiguracionAlmacenamiento * configuracion);
         virtual ~IAdministradorAlmacenamiento();
 
-        static unsigned long long int iniciarNuevo(std::string path_configuracion);
+        static uintmax_t iniciarNuevo(const ConfiguracionAlmacenamiento & configuracion);
+        static uintmax_t iniciarNuevo(const std::string & path_configuracion);
 
         static void liberarTodos();
 
-        static void liberar(unsigned long long int handler);
+        static void liberar(uintmax_t handler);
 
-        static void crearAdministradorAlmacenamientoLocal(unsigned long long int handler, ConfiguracionAlmacenamiento * configuracion);
+        static void crearAdministradorAlmacenamientoLocal(uintmax_t handler, ConfiguracionAlmacenamiento * configuracion);
 
-        static void crearAdministradorAlmacenamientoDistribuido(unsigned long long int handler, ConfiguracionAlmacenamiento * configuracion);
+        static void crearAdministradorAlmacenamientoDistribuido(uintmax_t handler, ConfiguracionAlmacenamiento * configuracion);
 
-        static bool administradorIniciado(unsigned long long int handler);
+        static bool administradorIniciado(uintmax_t handler);
 
         // GETTERS
 
-        static IAdministradorAlmacenamiento* getInstancia(unsigned long long int handler);
+        static IAdministradorAlmacenamiento* getInstancia(uintmax_t handler);
 
         static IAdministradorAlmacenamiento* getInstancia(std::string path_db);
 
@@ -85,6 +86,6 @@ namespace almacenamiento
 
 		// ATRIBUTOS
 
-        static std::unordered_map<unsigned long long int, IAdministradorAlmacenamiento*> mapa_administradores;
+        static std::unordered_map<uintmax_t, IAdministradorAlmacenamiento*> mapa_administradores;
 };
 };

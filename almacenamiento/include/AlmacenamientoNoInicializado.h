@@ -11,7 +11,7 @@ namespace excepciones
 class AlmacenamientoNoInicializado : public herramientas::utiles::excepciones::Excepcion
 {
 public:
-    AlmacenamientoNoInicializado(unsigned long long int handler = 0);
+    AlmacenamientoNoInicializado(uintmax_t handler = 0);
     AlmacenamientoNoInicializado(std::string path_db = "");
     virtual ~AlmacenamientoNoInicializado();
 };

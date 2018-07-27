@@ -10,17 +10,14 @@ using namespace almacenamiento;
 #include <utiles/include/Json.h>
 #include <utiles/include/ImposibleAbrirArchivo.h>
 
-ConfiguracionAlmacenamiento::ConfiguracionAlmacenamiento(std::string path_archivo_configuracion)
-{
+ConfiguracionAlmacenamiento::ConfiguracionAlmacenamiento(const std::string & path_archivo_configuracion) {
     if (false == path_archivo_configuracion.empty())
     {
         this->leerConfiguracion(path_archivo_configuracion);
     }
 }
 
-ConfiguracionAlmacenamiento::~ConfiguracionAlmacenamiento()
-{
-}
+ConfiguracionAlmacenamiento::~ConfiguracionAlmacenamiento() {}
 
 void ConfiguracionAlmacenamiento::leerConfiguracion(std::string path_archivo_configuracion)
 {
@@ -61,33 +58,44 @@ void ConfiguracionAlmacenamiento::leerConfiguracion(std::string path_archivo_con
     delete config_json;
 }
 
-bool ConfiguracionAlmacenamiento::almacenamientoLocal()
-{
+bool ConfiguracionAlmacenamiento::almacenamientoLocal() const {
 	return this->almacenamiento_local;
 }
 
-bool ConfiguracionAlmacenamiento::almacenamientoDistribuido()
-{
+bool ConfiguracionAlmacenamiento::almacenamientoDistribuido() const {
 	return this->almacenamiento_distribuido;
 }
 
-bool ConfiguracionAlmacenamiento::soloLectura() {
+bool ConfiguracionAlmacenamiento::soloLectura() const {
     return this->solo_lectura;
 }
 
-std::string ConfiguracionAlmacenamiento::archivoConfigLog()
-{
+std::string ConfiguracionAlmacenamiento::archivoConfigLog() const {
     return this->archivo_config_log;
 }
 
-std::string ConfiguracionAlmacenamiento::pathDB()
-{
+std::string ConfiguracionAlmacenamiento::pathDB() const {
 	return this->path_db;
 }
 
-void ConfiguracionAlmacenamiento::pathDB(std::string path_db)
-{
+void ConfiguracionAlmacenamiento::pathDB(const std::string & path_db) {
     this->path_db = path_db;
+}
+
+void ConfiguracionAlmacenamiento::almacenamientoLocal(bool local) {
+    this->almacenamiento_local = local;
+}
+
+void ConfiguracionAlmacenamiento::almacenamientoDistribuido(bool distribuido) {
+    this->almacenamiento_distribuido = distribuido;
+}
+
+void ConfiguracionAlmacenamiento::soloLectura(bool solo_lectura) {
+    this->solo_lectura = solo_lectura;
+}
+
+void ConfiguracionAlmacenamiento::archivoConfigLog(const std::string & path) {
+    this->archivo_config_log = path;
 }
 
 std::string ConfiguracionAlmacenamiento::tagPathDB()
